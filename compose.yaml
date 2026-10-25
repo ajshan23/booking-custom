@@ -1,0 +1,31 @@
+# Local development. Use authenticated MongoDB and HTTPS ingress for deployment.
+services:
+  api:
+    build: .
+    env_file: .env
+    environment:
+      MONGODB_URI: mongodb://mongo:27017
+      PORT: 3080
+    ports:
+      - "127.0.0.1:3080:3080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  mongo:
+    image: mongo:8
+    volumes:
+      - calendar-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+volumes:
+  calendar-data:

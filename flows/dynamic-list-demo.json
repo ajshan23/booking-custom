@@ -1,0 +1,446 @@
+{
+  "_nodes": [
+    {
+      "id": "demo_trigger",
+      "type": "triggerNode",
+      "position": {
+        "x": 450,
+        "y": 0
+      },
+      "data": {
+        "title": "triggerNode_1",
+        "trigger": "whatsapp",
+        "topic": "whatsapp.incoming_message",
+        "trigger_topic_title": "Incoming Message"
+      }
+    },
+    {
+      "id": "demo_greeting",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 450,
+        "y": 180
+      },
+      "data": {
+        "title": "whatsappTextNode_1",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "Good morning! Please choose a time of day from our demo list."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "Good morning! Please choose a time of day from our demo list.",
+          "is_response_wait": false
+        }
+      }
+    },
+    {
+      "id": "demo_api",
+      "type": "apiNode",
+      "position": {
+        "x": 450,
+        "y": 380
+      },
+      "data": {
+        "title": "apiNode_1",
+        "description": "Fetch demo choices from the calendar backend. Test request → Use as example to refresh the response.",
+        "request_version": 2,
+        "outcome_mode": "branches",
+        "api_type": "custom",
+        "url": "https://7f81-139-59-83-26.ngrok-free.app/demo/list-options",
+        "method": "GET",
+        "headers": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "ngrok-skip-browser-warning",
+            "value": "true"
+          }
+        ],
+        "parameters": [],
+        "body_mode": "none",
+        "timeout_ms": 15000,
+        "retry_transient": false,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "sample_payload": {
+          "items": [
+            {
+              "id": "demo_morning",
+              "title": "Morning",
+              "description": "Demo option: 9:00 AM to 12:00 PM"
+            },
+            {
+              "id": "demo_afternoon",
+              "title": "Afternoon",
+              "description": "Demo option: 12:00 PM to 3:00 PM"
+            },
+            {
+              "id": "demo_evening",
+              "title": "Evening",
+              "description": "Demo option: 3:00 PM to 6:00 PM"
+            }
+          ]
+        },
+        "sample_response": {
+          "status": 200,
+          "ok": true,
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "response_examples": [
+          {
+            "id": "demo-200",
+            "status": 200,
+            "headers": {
+              "content-type": "application/json"
+            },
+            "body": {
+              "items": [
+                {
+                  "id": "demo_morning",
+                  "title": "Morning",
+                  "description": "Demo option: 9:00 AM to 12:00 PM"
+                },
+                {
+                  "id": "demo_afternoon",
+                  "title": "Afternoon",
+                  "description": "Demo option: 12:00 PM to 3:00 PM"
+                },
+                {
+                  "id": "demo_evening",
+                  "title": "Evening",
+                  "description": "Demo option: 3:00 PM to 6:00 PM"
+                }
+              ]
+            }
+          },
+          {
+            "id": "demo-400",
+            "status": 400,
+            "headers": {},
+            "body": {
+              "message": "Example: invalid request"
+            }
+          },
+          {
+            "id": "demo-500",
+            "status": 500,
+            "headers": {},
+            "body": {
+              "message": "Example: backend unavailable"
+            }
+          }
+        ],
+        "selected_response_example": "demo-200"
+      }
+    },
+    {
+      "id": "demo_list",
+      "type": "listMessageNode",
+      "position": {
+        "x": 450,
+        "y": 600
+      },
+      "data": {
+        "title": "listMessageNode_1",
+        "options_mode": "dynamic",
+        "dynamic_options": {
+          "source": "{{an_1.data.items}}",
+          "id": "{{item.id}}",
+          "title": "{{item.title}}",
+          "description": "{{item.description}}",
+          "section_title": "Demo times",
+          "limit": 10
+        },
+        "to": "{{trigger.from}}",
+        "message_type": "interactive",
+        "meta_payload": {
+          "type": "list",
+          "body": {
+            "text": "Which time of day works for you? These are sample choices, not live availability."
+          },
+          "action": {
+            "button": "Choose a time",
+            "sections": []
+          }
+        },
+        "form_payload": {
+          "options_mode": "dynamic",
+          "dynamic_options": {
+            "source": "{{an_1.data.items}}",
+            "id": "{{item.id}}",
+            "title": "{{item.title}}",
+            "description": "{{item.description}}",
+            "section_title": "Demo times",
+            "limit": 10
+          },
+          "to": "{{trigger.from}}",
+          "body": "Which time of day works for you? These are sample choices, not live availability.",
+          "list_title": "Choose a time",
+          "is_response_wait": true,
+          "response_wait": 5,
+          "response_wait_unit": "minutes",
+          "header_type": "text",
+          "list": []
+        }
+      }
+    },
+    {
+      "id": "demo_selected",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 0,
+        "y": 900
+      },
+      "data": {
+        "title": "whatsappTextNode_2",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "You selected {{lmn_1.response.title}}. Demo complete — no meeting was booked."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "You selected {{lmn_1.response.title}}. Demo complete — no meeting was booked.",
+          "is_response_wait": false
+        }
+      }
+    },
+    {
+      "id": "demo_empty",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 350,
+        "y": 900
+      },
+      "data": {
+        "title": "whatsappTextNode_3",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "The demo returned no options. Please try again."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "The demo returned no options. Please try again.",
+          "is_response_wait": false
+        }
+      }
+    },
+    {
+      "id": "demo_invalid",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 700,
+        "y": 900
+      },
+      "data": {
+        "title": "whatsappTextNode_4",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "We could not load the demo choices. Please try again."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "We could not load the demo choices. Please try again.",
+          "is_response_wait": false
+        }
+      }
+    },
+    {
+      "id": "demo_timeout",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 1050,
+        "y": 900
+      },
+      "data": {
+        "title": "whatsappTextNode_5",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "No selection received. Send a new message to try the demo again."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "No selection received. Send a new message to try the demo again.",
+          "is_response_wait": false
+        }
+      }
+    },
+    {
+      "id": "demo_http_error",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": -350,
+        "y": 600
+      },
+      "data": {
+        "title": "whatsappTextNode_6",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "The demo API returned an error. Please try again later."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "The demo API returned an error. Please try again later.",
+          "is_response_wait": false
+        }
+      }
+    },
+    {
+      "id": "demo_request_failed",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 1250,
+        "y": 600
+      },
+      "data": {
+        "title": "whatsappTextNode_7",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "We could not reach the demo API. Please try again later."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "We could not reach the demo API. Please try again later.",
+          "is_response_wait": false
+        }
+      }
+    },
+    {
+      "id": "demo_end",
+      "type": "endFlowNode",
+      "position": {
+        "x": 450,
+        "y": 1200
+      },
+      "data": {
+        "title": "endFlowNode_1"
+      }
+    }
+  ],
+  "_edges": [
+    {
+      "id": "demo_trigger_next-step_demo_greeting",
+      "source": "demo_trigger",
+      "target": "demo_greeting",
+      "sourceHandle": "next-step-demo_trigger",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_greeting_next-step_demo_api",
+      "source": "demo_greeting",
+      "target": "demo_api",
+      "sourceHandle": "next-step-demo_greeting",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_api_success_demo_list",
+      "source": "demo_api",
+      "target": "demo_list",
+      "sourceHandle": "success-demo_api",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_api_http-error_demo_http_error",
+      "source": "demo_api",
+      "target": "demo_http_error",
+      "sourceHandle": "http-error-demo_api",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_api_request-failed_demo_request_failed",
+      "source": "demo_api",
+      "target": "demo_request_failed",
+      "sourceHandle": "request-failed-demo_api",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_http_error_next-step_demo_end",
+      "source": "demo_http_error",
+      "target": "demo_end",
+      "sourceHandle": "next-step-demo_http_error",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_request_failed_next-step_demo_end",
+      "source": "demo_request_failed",
+      "target": "demo_end",
+      "sourceHandle": "next-step-demo_request_failed",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_list_selected_demo_selected",
+      "source": "demo_list",
+      "target": "demo_selected",
+      "sourceHandle": "selected-demo_list",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_selected_next-step_demo_end",
+      "source": "demo_selected",
+      "target": "demo_end",
+      "sourceHandle": "next-step-demo_selected",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_list_empty_demo_empty",
+      "source": "demo_list",
+      "target": "demo_empty",
+      "sourceHandle": "empty-demo_list",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_empty_next-step_demo_end",
+      "source": "demo_empty",
+      "target": "demo_end",
+      "sourceHandle": "next-step-demo_empty",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_list_invalid_demo_invalid",
+      "source": "demo_list",
+      "target": "demo_invalid",
+      "sourceHandle": "invalid-demo_list",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_invalid_next-step_demo_end",
+      "source": "demo_invalid",
+      "target": "demo_end",
+      "sourceHandle": "next-step-demo_invalid",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_list_no-response_demo_timeout",
+      "source": "demo_list",
+      "target": "demo_timeout",
+      "sourceHandle": "no-response-demo_list",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "demo_timeout_next-step_demo_end",
+      "source": "demo_timeout",
+      "target": "demo_end",
+      "sourceHandle": "next-step-demo_timeout",
+      "targetHandle": "target",
+      "type": "button"
+    }
+  ]
+}

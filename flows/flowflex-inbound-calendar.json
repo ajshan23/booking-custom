@@ -1,0 +1,2126 @@
+{
+  "_nodes": [
+    {
+      "id": "calendar_1",
+      "type": "triggerNode",
+      "position": {
+        "x": 6125,
+        "y": 0
+      },
+      "data": {
+        "title": "triggerNode_1",
+        "description": "Customer initiated WhatsApp message",
+        "trigger": "whatsapp",
+        "topic": "whatsapp.incoming_message",
+        "trigger_topic_title": "Incoming Message"
+      }
+    },
+    {
+      "id": "calendar_2",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 6125,
+        "y": 250
+      },
+      "data": {
+        "title": "saveVariableNode_1",
+        "description": "Calendar setup and booking state",
+        "variables": [
+          {
+            "variable_name": "calendar_base",
+            "value": "https://7f81-139-59-83-26.ngrok-free.app"
+          },
+          {
+            "variable_name": "pricing_copy",
+            "value": "FlowFlex is a paid platform. Basic is $23/month billed $276 yearly, or $29/month billed $87 quarterly. Meta messaging charges are additional and vary by recipient country and message category."
+          },
+          {
+            "variable_name": "email_prompt",
+            "value": "What email should receive the Calendar invitation? Please enter a valid email address."
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": ""
+          },
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "slot_page",
+            "value": 0
+          },
+          {
+            "variable_name": "attempt_status",
+            "value": ""
+          },
+          {
+            "variable_name": "halted",
+            "value": false
+          },
+          {
+            "variable_name": "final_message",
+            "value": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_3",
+      "type": "endFlowNode",
+      "position": {
+        "x": 2975,
+        "y": 6500
+      },
+      "data": {
+        "title": "endFlowNode_1",
+        "description": "End conversation",
+        "message": "Inbound booking flow ended"
+      }
+    },
+    {
+      "id": "calendar_4",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 7038,
+        "y": 3000
+      },
+      "data": {
+        "title": "whatsappTextNode_1",
+        "description": "Human handoff message",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "I’ll pass this to our team so they can help you here."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "I’ll pass this to our team so they can help you here.",
+          "is_response_wait": false,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text"
+        }
+      }
+    },
+    {
+      "id": "calendar_5",
+      "type": "assignAgentNode",
+      "position": {
+        "x": 6935,
+        "y": 6250
+      },
+      "data": {
+        "title": "assignAgentNode_1",
+        "description": "Assign to the sales or support team",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "strategy": "round_robin",
+          "keep_existing": true
+        }
+      }
+    },
+    {
+      "id": "calendar_6",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 6443,
+        "y": 6000
+      },
+      "data": {
+        "title": "whatsappTextNode_2",
+        "description": "Customer chose not now",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "No problem. Message us here whenever you would like help."
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "No problem. Message us here whenever you would like help.",
+          "is_response_wait": false,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text"
+        }
+      }
+    },
+    {
+      "id": "calendar_7",
+      "type": "buttonMessageNode",
+      "position": {
+        "x": 6125,
+        "y": 500
+      },
+      "data": {
+        "title": "buttonMessageNode_1",
+        "description": "Welcome and choose an action",
+        "to": "{{trigger.from}}",
+        "message_type": "interactive",
+        "meta_payload": {
+          "type": "button",
+          "body": {
+            "text": "Hi! Welcome to FlowFlex AI.\n\n{{pricing_copy}}"
+          },
+          "action": {
+            "buttons": [
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_1",
+                  "title": "Book meeting"
+                }
+              },
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_2",
+                  "title": "Pricing"
+                }
+              },
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_3",
+                  "title": "Not now"
+                }
+              }
+            ]
+          }
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "Hi! Welcome to FlowFlex AI.\n\n{{pricing_copy}}",
+          "is_response_wait": true,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "header_type": "none",
+          "is_check_format": false,
+          "format_unit": "text",
+          "buttons": [
+            {
+              "title": "Book meeting"
+            },
+            {
+              "title": "Pricing"
+            },
+            {
+              "title": "Not now"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "calendar_8",
+      "type": "listMessageNode",
+      "position": {
+        "x": 328,
+        "y": 750
+      },
+      "data": {
+        "title": "listMessageNode_1",
+        "description": "Choose meeting type",
+        "to": "{{trigger.from}}",
+        "message_type": "interactive",
+        "meta_payload": {
+          "type": "list",
+          "body": {
+            "text": "What would you like to book?"
+          },
+          "action": {
+            "button": "Meeting type",
+            "sections": [
+              {
+                "title": "Meetings",
+                "rows": [
+                  {
+                    "id": "ROW_1.1",
+                    "title": "Onboarding",
+                    "description": "Get help setting up FlowFlex."
+                  },
+                  {
+                    "id": "ROW_1.2",
+                    "title": "Support",
+                    "description": "Book time with our support team."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "What would you like to book?",
+          "is_response_wait": true,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "header_type": "none",
+          "is_check_format": false,
+          "format_unit": "text",
+          "list_title": "Meeting type",
+          "list": [
+            {
+              "section_title": "Meetings",
+              "rows": [
+                {
+                  "row_title": "Onboarding",
+                  "row_description": "Get help setting up FlowFlex."
+                },
+                {
+                  "row_title": "Support",
+                  "row_description": "Book time with our support team."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "calendar_9",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 2965,
+        "y": 1000
+      },
+      "data": {
+        "title": "whatsappTextNode_3",
+        "description": "Collect customer name",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "What name should we use for the meeting?"
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "What name should we use for the meeting?",
+          "is_response_wait": true,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text"
+        }
+      }
+    },
+    {
+      "id": "calendar_10",
+      "type": "repeatUntilNode",
+      "position": {
+        "x": 6125,
+        "y": 1250
+      },
+      "data": {
+        "title": "repeatUntilNode_1",
+        "description": "Collect a valid email: maximum three attempts",
+        "max_iterations": 3,
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{!!halted || (an_1.ok && !!an_1.data.sessionId)}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_11",
+      "type": "endLoopNode",
+      "position": {
+        "x": 6125,
+        "y": 2500
+      },
+      "data": {
+        "title": "endLoopNode_1",
+        "description": "End email attempts"
+      }
+    },
+    {
+      "id": "calendar_12",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 6125,
+        "y": 1500
+      },
+      "data": {
+        "title": "whatsappTextNode_4",
+        "description": "Collect invitation email",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "{{email_prompt}}"
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "{{email_prompt}}",
+          "is_response_wait": true,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text"
+        }
+      }
+    },
+    {
+      "id": "calendar_13",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 6330,
+        "y": 2250
+      },
+      "data": {
+        "title": "saveVariableNode_2",
+        "description": "Email reply timed out",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_14",
+      "type": "apiNode",
+      "position": {
+        "x": 6023,
+        "y": 1750
+      },
+      "data": {
+        "title": "apiNode_1",
+        "description": "Create booking session and infer timezone from phone",
+        "url": "{{calendar_base}}/v1/sessions",
+        "method": "POST",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer REPLACE_WITH_SERVICE_API_KEY"
+          },
+          {
+            "key": "ngrok-skip-browser-warning",
+            "value": "true"
+          }
+        ],
+        "body": [
+          {
+            "key": "customerRef",
+            "value": "{{trigger.from}}"
+          },
+          {
+            "key": "name",
+            "value": "{{wtn_3.response.message}}"
+          },
+          {
+            "key": "email",
+            "value": "{{wtn_4.response.message}}"
+          },
+          {
+            "key": "meetingType",
+            "value": "{{lmn_1.response?.id === \"ROW_1.2\" ? \"support\" : \"onboarding\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_15",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 6023,
+        "y": 2000
+      },
+      "data": {
+        "title": "conditionSplitNode_1",
+        "description": "Booking session created",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{an_1.ok && !!an_1.data.sessionId}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_16",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 5920,
+        "y": 2250
+      },
+      "data": {
+        "title": "saveVariableNode_3",
+        "description": "Retry invalid email or hand off service failures",
+        "variables": [
+          {
+            "variable_name": "email_prompt",
+            "value": "{{an_1.data.message || \"Please enter a valid email address.\"}}"
+          },
+          {
+            "variable_name": "halted",
+            "value": "{{an_1.status === 422 ? false : true}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_17",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 6125,
+        "y": 2750
+      },
+      "data": {
+        "title": "conditionSplitNode_2",
+        "description": "Continue with a valid session",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{!halted && an_1.ok && !!an_1.data.sessionId}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_18",
+      "type": "repeatUntilNode",
+      "position": {
+        "x": 3560,
+        "y": 3000
+      },
+      "data": {
+        "title": "repeatUntilNode_2",
+        "description": "Booking conversation: maximum ten customer steps",
+        "max_iterations": 10,
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{!!halted || (attempt_status === \"confirmed\")}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_19",
+      "type": "endLoopNode",
+      "position": {
+        "x": 2965,
+        "y": 5250
+      },
+      "data": {
+        "title": "endLoopNode_2",
+        "description": "End booking conversation step"
+      }
+    },
+    {
+      "id": "calendar_20",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 3560,
+        "y": 3250
+      },
+      "data": {
+        "title": "conditionSplitNode_3",
+        "description": "Current step is date selection",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{booking_stage === \"date\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_21",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 4925,
+        "y": 3750
+      },
+      "data": {
+        "title": "whatsappTextNode_5",
+        "description": "Ask for a meeting date",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "{{date_prompt || (\"What date would you prefer? Times will be shown in \" + an_1.data.data.timezone + \". Example: 21 September 2026.\")}}"
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "{{date_prompt || (\"What date would you prefer? Times will be shown in \" + an_1.data.data.timezone + \". Example: 21 September 2026.\")}}",
+          "is_response_wait": true,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text"
+        }
+      }
+    },
+    {
+      "id": "calendar_22",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 5510,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_4",
+        "description": "Date reply timed out",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          },
+          {
+            "variable_name": "final_message",
+            "value": "We did not receive a date, so our team can help you continue."
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_23",
+      "type": "apiNode",
+      "position": {
+        "x": 4730,
+        "y": 4000
+      },
+      "data": {
+        "title": "apiNode_2",
+        "description": "Interpret customer date",
+        "url": "{{calendar_base}}/v1/sessions/{{an_1.data.sessionId}}/interpret",
+        "method": "POST",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer REPLACE_WITH_SERVICE_API_KEY"
+          },
+          {
+            "key": "ngrok-skip-browser-warning",
+            "value": "true"
+          }
+        ],
+        "body": [
+          {
+            "key": "text",
+            "value": "{{wtn_5.response.message}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_24",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 4730,
+        "y": 4250
+      },
+      "data": {
+        "title": "conditionSplitNode_4",
+        "description": "Date resolved",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{an_2.ok && an_2.data.status === \"resolved\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_25",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 5120,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_5",
+        "description": "Ask for a clearer date",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": "{{an_2.data.message || \"Please enter the full date.\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_26",
+      "type": "apiNode",
+      "position": {
+        "x": 4535,
+        "y": 4500
+      },
+      "data": {
+        "title": "apiNode_3",
+        "description": "Check availability for the resolved date",
+        "url": "{{calendar_base}}/v1/sessions/{{an_1.data.sessionId}}/availability",
+        "method": "POST",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer REPLACE_WITH_SERVICE_API_KEY"
+          },
+          {
+            "key": "ngrok-skip-browser-warning",
+            "value": "true"
+          }
+        ],
+        "body": [
+          {
+            "key": "page",
+            "value": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_27",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 4535,
+        "y": 4750
+      },
+      "data": {
+        "title": "conditionSplitNode_5",
+        "description": "Resolved date has slots",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{an_3.ok && an_3.data.status === \"slots_available\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_28",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 4730,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_6",
+        "description": "Move to time selection",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "slot"
+          },
+          {
+            "variable_name": "slot_page",
+            "value": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_29",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 4340,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_7",
+        "description": "No slots: ask customer for another date",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": "{{an_3.data.message || \"No times are available that day. Please choose another date.\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_30",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 2585,
+        "y": 3500
+      },
+      "data": {
+        "title": "conditionSplitNode_6",
+        "description": "Current step is time selection",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{booking_stage === \"slot\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_31",
+      "type": "apiNode",
+      "position": {
+        "x": 3673,
+        "y": 3750
+      },
+      "data": {
+        "title": "apiNode_4",
+        "description": "Fetch requested availability page",
+        "url": "{{calendar_base}}/v1/sessions/{{an_1.data.sessionId}}/availability",
+        "method": "POST",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer REPLACE_WITH_SERVICE_API_KEY"
+          },
+          {
+            "key": "ngrok-skip-browser-warning",
+            "value": "true"
+          }
+        ],
+        "body": [
+          {
+            "key": "page",
+            "value": "{{slot_page}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_32",
+      "type": "listMessageNode",
+      "position": {
+        "x": 3673,
+        "y": 4000
+      },
+      "data": {
+        "title": "listMessageNode_2",
+        "description": "Choose a time or request more",
+        "to": "{{trigger.from}}",
+        "message_type": "interactive",
+        "options_mode": "dynamic",
+        "dynamic_options": {
+          "source": "{{an_4.data.data.slots}}",
+          "id": "{{item.id}}",
+          "title": "{{item.title}}",
+          "description": "{{item.description}}",
+          "section_title": "Available times",
+          "limit": 10
+        },
+        "meta_payload": {
+          "type": "list",
+          "body": {
+            "text": "Choose an available time. Select More times for the next page. Times are shown in {{an_1.data.data.timezone}}."
+          },
+          "action": {
+            "button": "Available times"
+          }
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "Choose an available time. Select More times for the next page. Times are shown in {{an_1.data.data.timezone}}.",
+          "is_response_wait": true,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "header_type": "none",
+          "is_check_format": false,
+          "format_unit": "text",
+          "options_mode": "dynamic",
+          "list_title": "Available times"
+        }
+      }
+    },
+    {
+      "id": "calendar_33",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 3950,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_8",
+        "description": "Slot choice timed out",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          },
+          {
+            "variable_name": "final_message",
+            "value": "We did not receive a time selection."
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_34",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 3560,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_9",
+        "description": "Slot list or selection failed",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          },
+          {
+            "variable_name": "final_message",
+            "value": "Available times could not be selected."
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_35",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 3263,
+        "y": 4250
+      },
+      "data": {
+        "title": "conditionSplitNode_7",
+        "description": "Customer selected More times",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{lmn_2.response?.id === \"__next__\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_36",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 3160,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_10",
+        "description": "Advance availability page",
+        "variables": [
+          {
+            "variable_name": "slot_page",
+            "value": "{{slot_page + 1}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_37",
+      "type": "apiNode",
+      "position": {
+        "x": 3458,
+        "y": 4500
+      },
+      "data": {
+        "title": "apiNode_5",
+        "description": "Select real slot",
+        "url": "{{calendar_base}}/v1/sessions/{{an_1.data.sessionId}}/select",
+        "method": "POST",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer REPLACE_WITH_SERVICE_API_KEY"
+          },
+          {
+            "key": "ngrok-skip-browser-warning",
+            "value": "true"
+          }
+        ],
+        "body": [
+          {
+            "key": "selection",
+            "value": "{{lmn_2.response.id}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_38",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 3458,
+        "y": 4750
+      },
+      "data": {
+        "title": "conditionSplitNode_8",
+        "description": "Slot is ready for confirmation",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{an_5.ok && an_5.data.status === \"awaiting_confirmation\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_39",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 2770,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_11",
+        "description": "Move to confirmation",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "confirm"
+          },
+          {
+            "variable_name": "confirmation_value",
+            "value": "{{an_5.data.data.confirmationToken}}"
+          },
+          {
+            "variable_name": "selected_summary",
+            "value": "{{an_5.data.message}}"
+          },
+          {
+            "variable_name": "selected_slot",
+            "value": "{{an_5.data.message.split(\"\\n\")[1] || an_5.data.message}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_40",
+      "type": "buttonMessageNode",
+      "position": {
+        "x": 1795,
+        "y": 4000
+      },
+      "data": {
+        "title": "buttonMessageNode_2",
+        "description": "Confirm the booking",
+        "to": "{{trigger.from}}",
+        "message_type": "interactive",
+        "meta_payload": {
+          "type": "button",
+          "body": {
+            "text": "{{selected_summary.split(\"Reply\")[0].trim()}}\n\nTap Confirm booking to reserve this time."
+          },
+          "action": {
+            "buttons": [
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_1",
+                  "title": "Confirm booking"
+                }
+              },
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_2",
+                  "title": "Not now"
+                }
+              },
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_3",
+                  "title": "Talk to team"
+                }
+              }
+            ]
+          }
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "{{selected_summary.split(\"Reply\")[0].trim()}}\n\nTap Confirm booking to reserve this time.",
+          "is_response_wait": true,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "header_type": "none",
+          "is_check_format": false,
+          "format_unit": "text",
+          "buttons": [
+            {
+              "title": "Confirm booking"
+            },
+            {
+              "title": "Not now"
+            },
+            {
+              "title": "Talk to team"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "calendar_41",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 2380,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_12",
+        "description": "Confirmation timed out",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "exit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_42",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1990,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_13",
+        "description": "Customer chose not to book",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "exit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_43",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1600,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_14",
+        "description": "Customer requested the team",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          },
+          {
+            "variable_name": "final_message",
+            "value": "Our team will help you complete the booking."
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_44",
+      "type": "apiNode",
+      "position": {
+        "x": 820,
+        "y": 4250
+      },
+      "data": {
+        "title": "apiNode_6",
+        "description": "Create booking once",
+        "url": "{{calendar_base}}/v1/sessions/{{an_1.data.sessionId}}/book",
+        "method": "POST",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer REPLACE_WITH_SERVICE_API_KEY"
+          },
+          {
+            "key": "ngrok-skip-browser-warning",
+            "value": "true"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "inbound-{{confirmation_value}}"
+          }
+        ],
+        "body": [
+          {
+            "key": "confirmed",
+            "value": "{{true}}"
+          },
+          {
+            "key": "confirmationToken",
+            "value": "{{confirmation_value}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_45",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 820,
+        "y": 4500
+      },
+      "data": {
+        "title": "conditionSplitNode_9",
+        "description": "Meeting confirmed with a Meet link",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{an_6.data.status === \"confirmed\" && !!an_6.data.data?.meetUrl}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_46",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1210,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_15",
+        "description": "Remember confirmed booking",
+        "variables": [
+          {
+            "variable_name": "attempt_status",
+            "value": "confirmed"
+          },
+          {
+            "variable_name": "meeting_link",
+            "value": "{{an_6.data.data.meetUrl}}"
+          },
+          {
+            "variable_name": "booking_id",
+            "value": "{{an_6.data.data.bookingId}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_47",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 625,
+        "y": 4750
+      },
+      "data": {
+        "title": "conditionSplitNode_10",
+        "description": "Selected slot was taken before booking",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{[\"slot_unavailable\",\"slot_expired\"].includes(an_6.data.status) && an_6.data.data?.canReselect === true}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_48",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 820,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_16",
+        "description": "Return to date selection after slot conflict",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "slot_page",
+            "value": 0
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": "{{an_6.data.message || \"That time was just taken.\"}} Please choose another date."
+          },
+          {
+            "variable_name": "final_message",
+            "value": "{{an_6.data.message}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_49",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 430,
+        "y": 5000
+      },
+      "data": {
+        "title": "saveVariableNode_17",
+        "description": "Booking requires team review",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          },
+          {
+            "variable_name": "final_message",
+            "value": "{{an_6.data.message || \"We could not confirm the meeting automatically.\"}} Please do not submit another booking."
+          }
+        ]
+      }
+    },
+    {
+      "id": "calendar_50",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 2965,
+        "y": 5500
+      },
+      "data": {
+        "title": "conditionSplitNode_11",
+        "description": "Booking completed successfully",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{attempt_status === \"confirmed\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_51",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 0,
+        "y": 6250
+      },
+      "data": {
+        "title": "whatsappTextNode_6",
+        "description": "Send confirmed meeting",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "Your meeting is confirmed.\n\n{{selected_slot}}\n\nGoogle Meet: {{meeting_link}}\nBooking reference: {{booking_id}}"
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "Your meeting is confirmed.\n\n{{selected_slot}}\n\nGoogle Meet: {{meeting_link}}\nBooking reference: {{booking_id}}",
+          "is_response_wait": false,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text"
+        }
+      }
+    },
+    {
+      "id": "calendar_52",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 6833,
+        "y": 5750
+      },
+      "data": {
+        "title": "conditionSplitNode_12",
+        "description": "Customer exited without booking",
+        "conditions": [
+          {
+            "id": "group",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "filter",
+                "type": "{{halted === \"exit\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "calendar_53",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 6833,
+        "y": 6000
+      },
+      "data": {
+        "title": "whatsappTextNode_7",
+        "description": "Explain before human handoff",
+        "to": "{{trigger.from}}",
+        "meta_payload": {
+          "body": "{{final_message || \"Our team will help you complete the booking.\"}}"
+        },
+        "form_payload": {
+          "to": "{{trigger.from}}",
+          "body": "{{final_message || \"Our team will help you complete the booking.\"}}",
+          "is_response_wait": false,
+          "response_wait": "10",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text"
+        }
+      }
+    }
+  ],
+  "_edges": [
+    {
+      "id": "e1",
+      "source": "calendar_1",
+      "target": "calendar_2",
+      "sourceHandle": "next-step-calendar_1",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e2",
+      "source": "calendar_4",
+      "target": "calendar_5",
+      "sourceHandle": "next-step-calendar_4",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e3",
+      "source": "calendar_5",
+      "target": "calendar_3",
+      "sourceHandle": "next-step-calendar_5",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e4",
+      "source": "calendar_6",
+      "target": "calendar_3",
+      "sourceHandle": "next-step-calendar_6",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e5",
+      "source": "calendar_2",
+      "target": "calendar_7",
+      "sourceHandle": "next-step-calendar_2",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e6",
+      "source": "calendar_7",
+      "target": "calendar_3",
+      "sourceHandle": "no-response-calendar_7",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e7",
+      "source": "calendar_7",
+      "target": "calendar_4",
+      "sourceHandle": "BUTTON_2-calendar_7",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e8",
+      "source": "calendar_7",
+      "target": "calendar_6",
+      "sourceHandle": "BUTTON_3-calendar_7",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e9",
+      "source": "calendar_7",
+      "target": "calendar_8",
+      "sourceHandle": "BUTTON_1-calendar_7",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e10",
+      "source": "calendar_8",
+      "target": "calendar_3",
+      "sourceHandle": "no-response-calendar_8",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e11",
+      "source": "calendar_8",
+      "target": "calendar_9",
+      "sourceHandle": "ROW_1.1-calendar_8",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e12",
+      "source": "calendar_8",
+      "target": "calendar_9",
+      "sourceHandle": "ROW_1.2-calendar_8",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e13",
+      "source": "calendar_9",
+      "target": "calendar_3",
+      "sourceHandle": "no-response-calendar_9",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e14",
+      "source": "calendar_9",
+      "target": "calendar_10",
+      "sourceHandle": "next-step-calendar_9",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e15",
+      "source": "calendar_10",
+      "target": "calendar_12",
+      "sourceHandle": "next-step-calendar_10",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e16",
+      "source": "calendar_12",
+      "target": "calendar_13",
+      "sourceHandle": "no-response-calendar_12",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e17",
+      "source": "calendar_13",
+      "target": "calendar_11",
+      "sourceHandle": "next-step-calendar_13",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e18",
+      "source": "calendar_12",
+      "target": "calendar_14",
+      "sourceHandle": "next-step-calendar_12",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e19",
+      "source": "calendar_14",
+      "target": "calendar_15",
+      "sourceHandle": "next-step-calendar_14",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e20",
+      "source": "calendar_15",
+      "target": "calendar_11",
+      "sourceHandle": "yes-calendar_15",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e21",
+      "source": "calendar_15",
+      "target": "calendar_16",
+      "sourceHandle": "no-calendar_15",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e22",
+      "source": "calendar_16",
+      "target": "calendar_11",
+      "sourceHandle": "next-step-calendar_16",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e23",
+      "source": "calendar_11",
+      "target": "calendar_17",
+      "sourceHandle": "next-step-calendar_11",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e24",
+      "source": "calendar_17",
+      "target": "calendar_4",
+      "sourceHandle": "no-calendar_17",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e25",
+      "source": "calendar_17",
+      "target": "calendar_18",
+      "sourceHandle": "yes-calendar_17",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e26",
+      "source": "calendar_18",
+      "target": "calendar_20",
+      "sourceHandle": "next-step-calendar_18",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e27",
+      "source": "calendar_20",
+      "target": "calendar_21",
+      "sourceHandle": "yes-calendar_20",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e28",
+      "source": "calendar_21",
+      "target": "calendar_22",
+      "sourceHandle": "no-response-calendar_21",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e29",
+      "source": "calendar_22",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_22",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e30",
+      "source": "calendar_21",
+      "target": "calendar_23",
+      "sourceHandle": "next-step-calendar_21",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e31",
+      "source": "calendar_23",
+      "target": "calendar_24",
+      "sourceHandle": "next-step-calendar_23",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e32",
+      "source": "calendar_24",
+      "target": "calendar_25",
+      "sourceHandle": "no-calendar_24",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e33",
+      "source": "calendar_25",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_25",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e34",
+      "source": "calendar_24",
+      "target": "calendar_26",
+      "sourceHandle": "yes-calendar_24",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e35",
+      "source": "calendar_26",
+      "target": "calendar_27",
+      "sourceHandle": "next-step-calendar_26",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e36",
+      "source": "calendar_27",
+      "target": "calendar_28",
+      "sourceHandle": "yes-calendar_27",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e37",
+      "source": "calendar_28",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_28",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e38",
+      "source": "calendar_27",
+      "target": "calendar_29",
+      "sourceHandle": "no-calendar_27",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e39",
+      "source": "calendar_29",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_29",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e40",
+      "source": "calendar_20",
+      "target": "calendar_30",
+      "sourceHandle": "no-calendar_20",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e41",
+      "source": "calendar_30",
+      "target": "calendar_31",
+      "sourceHandle": "yes-calendar_30",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e42",
+      "source": "calendar_31",
+      "target": "calendar_32",
+      "sourceHandle": "next-step-calendar_31",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e43",
+      "source": "calendar_32",
+      "target": "calendar_33",
+      "sourceHandle": "no-response-calendar_32",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e44",
+      "source": "calendar_33",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_33",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e45",
+      "source": "calendar_32",
+      "target": "calendar_34",
+      "sourceHandle": "invalid-calendar_32",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e46",
+      "source": "calendar_32",
+      "target": "calendar_34",
+      "sourceHandle": "empty-calendar_32",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e47",
+      "source": "calendar_34",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_34",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e48",
+      "source": "calendar_32",
+      "target": "calendar_35",
+      "sourceHandle": "selected-calendar_32",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e49",
+      "source": "calendar_35",
+      "target": "calendar_36",
+      "sourceHandle": "yes-calendar_35",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e50",
+      "source": "calendar_36",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_36",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e51",
+      "source": "calendar_35",
+      "target": "calendar_37",
+      "sourceHandle": "no-calendar_35",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e52",
+      "source": "calendar_37",
+      "target": "calendar_38",
+      "sourceHandle": "next-step-calendar_37",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e53",
+      "source": "calendar_38",
+      "target": "calendar_34",
+      "sourceHandle": "no-calendar_38",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e54",
+      "source": "calendar_38",
+      "target": "calendar_39",
+      "sourceHandle": "yes-calendar_38",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e55",
+      "source": "calendar_39",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_39",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e56",
+      "source": "calendar_30",
+      "target": "calendar_40",
+      "sourceHandle": "no-calendar_30",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e57",
+      "source": "calendar_40",
+      "target": "calendar_41",
+      "sourceHandle": "no-response-calendar_40",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e58",
+      "source": "calendar_41",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_41",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e59",
+      "source": "calendar_40",
+      "target": "calendar_42",
+      "sourceHandle": "BUTTON_2-calendar_40",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e60",
+      "source": "calendar_42",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_42",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e61",
+      "source": "calendar_40",
+      "target": "calendar_43",
+      "sourceHandle": "BUTTON_3-calendar_40",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e62",
+      "source": "calendar_43",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_43",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e63",
+      "source": "calendar_40",
+      "target": "calendar_44",
+      "sourceHandle": "BUTTON_1-calendar_40",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e64",
+      "source": "calendar_44",
+      "target": "calendar_45",
+      "sourceHandle": "next-step-calendar_44",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e65",
+      "source": "calendar_45",
+      "target": "calendar_46",
+      "sourceHandle": "yes-calendar_45",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e66",
+      "source": "calendar_46",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_46",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e67",
+      "source": "calendar_45",
+      "target": "calendar_47",
+      "sourceHandle": "no-calendar_45",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e68",
+      "source": "calendar_47",
+      "target": "calendar_48",
+      "sourceHandle": "yes-calendar_47",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e69",
+      "source": "calendar_48",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_48",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e70",
+      "source": "calendar_47",
+      "target": "calendar_49",
+      "sourceHandle": "no-calendar_47",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e71",
+      "source": "calendar_49",
+      "target": "calendar_19",
+      "sourceHandle": "next-step-calendar_49",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e72",
+      "source": "calendar_19",
+      "target": "calendar_50",
+      "sourceHandle": "next-step-calendar_19",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e73",
+      "source": "calendar_50",
+      "target": "calendar_51",
+      "sourceHandle": "yes-calendar_50",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e74",
+      "source": "calendar_51",
+      "target": "calendar_3",
+      "sourceHandle": "next-step-calendar_51",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e75",
+      "source": "calendar_50",
+      "target": "calendar_52",
+      "sourceHandle": "no-calendar_50",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e76",
+      "source": "calendar_52",
+      "target": "calendar_6",
+      "sourceHandle": "yes-calendar_52",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e77",
+      "source": "calendar_52",
+      "target": "calendar_53",
+      "sourceHandle": "no-calendar_52",
+      "targetHandle": "target",
+      "type": "button"
+    },
+    {
+      "id": "e78",
+      "source": "calendar_53",
+      "target": "calendar_5",
+      "sourceHandle": "next-step-calendar_53",
+      "targetHandle": "target",
+      "type": "button"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customcalander · Scheduling</title>
+  <link rel="stylesheet" href="/portal.css"><script src="/portal.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/">▦ <span>customcalander</span></a><span class="internal">INTERNAL WORKSPACE</span><button id="logout" class="quiet" hidden>Lock portal</button></header>
+  <main>
+    <section id="login" class="login-card">
+      <span class="eyebrow">SCHEDULING WORKSPACE</span><h1>Your day, organized.</h1>
+      <p>View customer meetings and manage when your team is available.</p>
+      <form id="login-form"><label for="admin-key">Admin access key</label><input id="admin-key" type="password" autocomplete="off" required placeholder="Enter your admin key">
+        <button class="primary" type="submit">Open workspace <span aria-hidden="true">→</span></button>
+      </form><p class="small">Your key stays in this tab’s memory. Reloading the page locks the portal.</p>
+    </section>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <div id="workspace" hidden>
+      <div class="page-heading"><div><span class="eyebrow">CUSTOMER MEETINGS</span><h1>Scheduling workspace</h1><p>One place for your meetings and availability.</p></div><div class="connection"><span id="google-status" class="badge">Checking Google…</span><button id="connect" class="secondary">Connect Google</button><a id="authorize" hidden target="_blank" rel="noopener noreferrer">Authorize Google ↗</a></div></div>
+      <nav class="tabs" aria-label="Workspace views"><button id="schedule-tab" class="tab active" aria-current="page">Schedule</button><button id="booking-tab" class="tab">Book a meeting</button><button id="settings-tab" class="tab">Availability settings</button></nav>
+      <section id="booking-panel" aria-labelledby="booking-heading" hidden>
+        <div class="panel-heading"><div><h2 id="booking-heading">Book a customer meeting</h2><p>Choose an available time, then confirm the customer details.</p></div></div>
+        <form id="booking-form" class="booking-card">
+          <fieldset id="booking-details"><legend>Customer & meeting details</legend><div class="booking-fields">
+            <label>Customer name<input name="name" autocomplete="name" maxlength="120" required></label>
+            <label>Customer phone<input name="phone" type="tel" autocomplete="tel" placeholder="+919876543210" pattern="\+[1-9][0-9]{7,14}" required><span class="hint">Include country code, without spaces.</span></label>
+            <label>Customer email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+            <label>Meeting type<select name="meetingType"><option value="onboarding">Onboarding</option><option value="support">Support call</option></select></label>
+            <label>Meeting date<input name="date" type="date" required></label>
+            <label>Customer timezone<input name="timezone" placeholder="Asia/Kolkata" required><span class="hint">Available times use this timezone.</span></label>
+          </div></fieldset>
+          <button id="find-slots" type="submit" class="secondary">Find available times</button>
+          <div id="booking-options" class="booking-options" hidden><label for="booking-slot">Available time<select id="booking-slot"></select></label><p class="hint">Availability will be checked again when you send.</p>
+            <label class="confirm-line"><input id="booking-confirm" type="checkbox">I have checked the customer details and selected time.</label>
+            <button id="book-send" type="button" class="primary">Book & send</button><p class="small">This creates the Calendar event and requests the email invitation. The custom-flow notification API is not connected yet, so no WhatsApp notification will be sent.</p>
+          </div>
+        </form>
+        <div id="booking-result" class="booking-result" role="status" hidden><h3 id="booking-result-title"></h3><p id="booking-result-message"></p><p id="booking-notification"></p><p id="booking-reference" class="small"></p><a id="booking-meet" target="_blank" rel="noopener noreferrer" hidden>Open Google Meet ↗</a><div class="booking-actions"><button id="check-booking" class="secondary" hidden>Check booking status</button><button id="new-booking" class="secondary" hidden>Book another meeting</button></div></div>
+      </section>
+      <section id="schedule-panel" aria-labelledby="schedule-heading">
+        <div class="panel-heading"><div><h2 id="schedule-heading">Your schedule</h2><p id="schedule-description">Bookings made through customcalander.</p></div><button id="refresh" class="secondary">Refresh</button></div>
+        <div class="toolbar"><div class="segments"><button id="today" class="active" aria-pressed="true">Today</button><button id="tomorrow" aria-pressed="false">Tomorrow</button></div><label class="date-control" for="schedule-date">Choose a date <input type="date" id="schedule-date" required></label><span id="timezone" class="timezone"></span></div>
+        <div class="schedule-card"><div class="list-heading"><h3 id="date-heading">Loading schedule…</h3><span id="meeting-count" class="count"></span></div>
+          <div id="empty" class="empty" hidden><span class="empty-icon" aria-hidden="true">▦</span><h3>No meetings on this date</h3><p>Customer bookings will appear here once created.</p></div>
+          <div id="table-wrap" class="table-wrap"><table><thead><tr><th scope="col">Time</th><th scope="col">Customer</th><th scope="col">Meeting</th><th scope="col">Status</th><th scope="col">Join</th></tr></thead><tbody id="bookings"></tbody></table></div>
+          <div id="pagination" class="pagination" hidden><button id="previous" class="secondary">Previous</button><span id="page-label"></span><button id="next" class="secondary">Next</button></div>
+        </div><p class="small">Times are shown in your organizer timezone. This list includes only bookings made through customcalander, not other Google Calendar events.</p>
+        <section class="block-card" aria-labelledby="blocked-heading">
+          <div><span class="eyebrow">TIME OFF & BREAKS</span><h3 id="blocked-heading">Block specific hours</h3><p>Make part of a day unavailable for new bookings. Existing meetings are kept.</p></div>
+          <form id="block-form"><div class="block-fields"><label>Date<input id="block-date" name="date" type="date" required></label><label>From<input name="startTime" type="time" required value="13:00"></label><label>Until<input name="endTime" type="time" required value="14:00"></label><label>Reason · optional<input name="reason" type="text" maxlength="200" placeholder="Lunch, team meeting, time off"></label><button class="primary" type="submit">Block hours</button></div><p class="hint" id="block-timezone"></p></form>
+          <div class="blocked-heading"><h4>Blocked hours on the selected schedule date</h4><span id="block-count" class="count"></span></div>
+          <p id="no-blocks" class="small">No blocked hours on this date.</p><ul id="blocks" class="blocks"></ul>
+        </section>
+      </section>
+      <section id="settings-panel" aria-labelledby="settings-heading" hidden>
+        <div class="panel-heading"><div><h2 id="settings-heading">Availability settings</h2><p>Set the hours and booking rules for your team.</p></div><button id="reload-settings" class="secondary">Reload settings</button></div>
+        <form id="settings-form">
+          <div class="settings-grid"><section class="settings-card"><span class="eyebrow">01 / WORKING HOURS</span><h3>When you’re available</h3><label for="DEFAULT_TIMEZONE">Organizer timezone</label><input id="DEFAULT_TIMEZONE" name="DEFAULT_TIMEZONE" placeholder="Asia/Kolkata" required><p class="hint">Use a timezone such as Asia/Kolkata or America/New_York.</p>
+            <fieldset><legend>Working days</legend><div class="weekdays">
+              <label><input type="checkbox" name="WORKING_DAYS" value="1">Mon</label><label><input type="checkbox" name="WORKING_DAYS" value="2">Tue</label><label><input type="checkbox" name="WORKING_DAYS" value="3">Wed</label><label><input type="checkbox" name="WORKING_DAYS" value="4">Thu</label><label><input type="checkbox" name="WORKING_DAYS" value="5">Fri</label><label><input type="checkbox" name="WORKING_DAYS" value="6">Sat</label><label><input type="checkbox" name="WORKING_DAYS" value="7">Sun</label>
+            </div></fieldset><div class="field-pair"><label>Start time<input type="time" name="WORK_START" required></label><label>End time<input type="time" name="WORK_END" required></label></div>
+          </section>
+          <section class="settings-card"><span class="eyebrow">02 / MEETINGS</span><h3>Time for each customer</h3>
+            <div class="field-pair"><label>Support call · minutes<input name="SUPPORT_DURATION_MINUTES" type="number" min="1" max="480" required></label><label>Onboarding · minutes<input name="ONBOARDING_DURATION_MINUTES" type="number" min="1" max="480" required></label></div>
+            <label>Buffer between meetings · minutes<input name="BUFFER_MINUTES" type="number" min="0" max="120" required></label><p class="hint">Leave room to prepare for the next conversation.</p>
+            <label>Minimum booking notice · minutes<input name="MIN_NOTICE_MINUTES" type="number" min="1" max="10080" required></label>
+          </section>
+          <section class="settings-card"><span class="eyebrow">03 / BOOKING WINDOW</span><h3>How far ahead to book</h3><label>Booking horizon · days<input name="BOOKING_HORIZON_DAYS" type="number" min="1" max="180" required></label><p class="hint">The furthest date customers can choose.</p><label>Slot choice expiry · minutes<input name="SLOT_TTL_MINUTES" type="number" min="1" max="60" required></label><p class="hint">How long offered choices remain valid before availability must be checked again.</p><label>Conversation expiry · hours<input name="SESSION_TTL_HOURS" type="number" min="1" max="168" required></label></section>
+          </div><div class="save-bar"><div><strong>Changes apply to new availability checks.</strong><p>Confirmed meetings keep their time. Previously offered slots are rechecked when booked.</p><span id="settings-source" class="small"></span></div><button class="primary" type="submit">Save settings</button></div>
+        </form><p class="small">Credentials, API keys, database connection and server configuration stay in your server environment.</p>
+      </section>
+    </div>
+  </main><footer>customcalander <span>Customer support & onboarding</span></footer>
+</body>
+</html>
