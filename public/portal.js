@@ -79,6 +79,16 @@ async function loadSchedule() {
       if (booking.meetUrl && booking.status !== 'cancelled' && booking.status !== 'failed') {
         try { const url = new URL(booking.meetUrl); if (url.protocol === 'https:' && url.hostname === 'meet.google.com') { const link = document.createElement('a'); link.href = url.href; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Join Meet ↗'; join.replaceChildren(link); } } catch { /* Ignore invalid provider links. */ }
       }
+      const actions = cell(row, '');
+      if (['confirmed', 'meet_pending', 'meet_failed'].includes(booking.status)) {
+        const cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'secondary danger'; cancel.textContent = 'Cancel';
+        cancel.addEventListener('click', () => action(cancel, async () => {
+          if (!confirm(`Cancel the meeting with ${booking.name}? The Google Calendar event is deleted and attendees get a cancellation email.`)) return;
+          const result = await api(`/v1/admin/bookings/${encodeURIComponent(booking._id)}/cancel`, { method: 'POST' });
+          notice(result.status === 'cancelled' ? 'Meeting cancelled.' : 'Cancelling the meeting. Refresh in a moment.'); await loadSchedule();
+        }));
+        actions.append(cancel);
+      }
       $('bookings').append(row);
     }
     $('empty').hidden = data.total !== 0; $('table-wrap').hidden = data.bookings.length === 0;

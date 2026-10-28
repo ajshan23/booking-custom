@@ -36,7 +36,7 @@
         <div class="toolbar"><div class="segments"><button id="today" class="active" aria-pressed="true">Today</button><button id="tomorrow" aria-pressed="false">Tomorrow</button></div><label class="date-control" for="schedule-date">Choose a date <input type="date" id="schedule-date" required></label><span id="timezone" class="timezone"></span></div>
         <div class="schedule-card"><div class="list-heading"><h3 id="date-heading">Loading schedule…</h3><span id="meeting-count" class="count"></span></div>
           <div id="empty" class="empty" hidden><span class="empty-icon" aria-hidden="true">▦</span><h3>No meetings on this date</h3><p>Customer bookings will appear here once created.</p></div>
-          <div id="table-wrap" class="table-wrap"><table><thead><tr><th scope="col">Time</th><th scope="col">Customer</th><th scope="col">Meeting</th><th scope="col">Status</th><th scope="col">Join</th></tr></thead><tbody id="bookings"></tbody></table></div>
+          <div id="table-wrap" class="table-wrap"><table><thead><tr><th scope="col">Time</th><th scope="col">Customer</th><th scope="col">Meeting</th><th scope="col">Status</th><th scope="col">Join</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead><tbody id="bookings"></tbody></table></div>
           <div id="pagination" class="pagination" hidden><button id="previous" class="secondary">Previous</button><span id="page-label"></span><button id="next" class="secondary">Next</button></div>
         </div><p class="small">Times are shown in your organizer timezone. This list includes only bookings made through Flowflex Booking, not other Google Calendar events.</p>
         <section class="block-card" aria-labelledby="blocked-heading">

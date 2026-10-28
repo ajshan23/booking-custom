@@ -217,7 +217,8 @@ test('the full HTTP contract supports booking, polling and cancellation', async 
   const booked = await post(`${base}/book`).set('Idempotency-Key', 'http-booking-123').send({ confirmed: true, confirmationToken: selected.body.data.confirmationToken }).expect(200);
   assert.equal(booked.body.status, 'confirmed'); assert.ok(booked.body.data.meetUrl);
   await request(app).get(`/v1/bookings/${booked.body.data.bookingId}`).set('Authorization', `Bearer ${config.SERVICE_API_KEY}`).expect(200);
-  const cancelled = await post(`/v1/bookings/${booked.body.data.bookingId}/cancel`).expect(200);
+  await request(app).post(`/v1/admin/bookings/${booked.body.data.bookingId}/cancel`).set('Authorization', `Bearer ${config.SERVICE_API_KEY}`).expect(401);
+  const cancelled = await request(app).post(`/v1/admin/bookings/${booked.body.data.bookingId}/cancel`).set('Authorization', `Bearer ${config.ADMIN_API_KEY}`).expect(200);
   assert.equal(cancelled.body.status, 'cancelled'); assert.equal(calendar.created, 1);
 });
 

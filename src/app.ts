@@ -87,6 +87,10 @@ export function createApp(config: Config, service: BookingService, google: Googl
     const result = await service.adminBook(body.sessionId, body.slotId, key);
     res.status(['creating', 'reconciling', 'meet_pending'].includes(result.status) ? 202 : ['failed', 'slot_unavailable', 'slot_expired'].includes(result.status) ? 409 : 200).json(result);
   });
+  // Cancels the Google Calendar event (attendees get Google's cancellation email).
+  app.post('/v1/admin/bookings/:id/cancel', async (req, res) => {
+    res.json(await service.cancel(z.string().min(1).max(100).parse(req.params.id)));
+  });
   app.get('/v1/admin/bookings/:id', async (req, res) => {
     res.json(service.bookingResult(await service.process(z.string().min(1).max(100).parse(req.params.id))));
   });
