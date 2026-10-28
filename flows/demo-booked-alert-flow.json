@@ -1,0 +1,114 @@
+{
+  "_nodes": [
+    {
+      "id": "9c872a65-e25f-4f4b-9c1a-1a9843201643",
+      "type": "triggerNode",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "title": "triggerNode_1",
+        "displayName": "Demo booked",
+        "description": "",
+        "trigger": "custom_integration",
+        "topic": "custom:REPLACE_WITH_INTEGRATION:demo.booked",
+        "trigger_topic_title": "demo.booked",
+        "trigger_topic_description": "Sent by the Demo booking flow after a demo is confirmed"
+      }
+    },
+    {
+      "id": "ad2baac7-6ecd-4ff4-8b94-b75dbadec797",
+      "type": "internalAlertNode",
+      "position": {
+        "x": 0,
+        "y": 260
+      },
+      "data": {
+        "title": "internalAlertNode_1",
+        "displayName": "Alert the organizer",
+        "description": "",
+        "alert": {
+          "version": 1,
+          "via": [
+            "whatsapp",
+            "email"
+          ],
+          "whatsapp": {
+            "template_mode": "inline",
+            "inline_template": {
+              "category": "UTILITY",
+              "language": "en",
+              "body": "New demo booked ✅\n\nCustomer: {{customer_name}}\nWhatsApp: {{customer_phone}}\nEmail: {{customer_email}}\nWhen: {{meeting_time}}\nGoogle Meet: {{meet_link}}\n\nThe Google Calendar invite has been sent to the customer.",
+              "mapping": {
+                "customer_name": "{{tg.customername}}",
+                "customer_phone": "{{tg.customerphonenumber}}",
+                "customer_email": "{{tg.customer_email}}",
+                "meeting_time": "{{tg.meeting_time}}",
+                "meet_link": "{{tg.meet_link}}"
+              },
+              "samples": {
+                "customer_name": "Ajmal",
+                "customer_phone": "971501234567",
+                "customer_email": "ajmal@company.com",
+                "meeting_time": "Mon, 2 Nov 2026, 4:00 PM–4:15 PM (Asia/Dubai)",
+                "meet_link": "https://meet.google.com/abc-defg-hij"
+              }
+            }
+          },
+          "email": {
+            "subject": "New demo booked: {{tg.customername}} — {{tg.meeting_time}}",
+            "body": "A new FlowFlex demo was booked from WhatsApp.\n\nCustomer: {{tg.customername}}\nWhatsApp: {{tg.customerphonenumber}}\nEmail: {{tg.customer_email}}\nWhen: {{tg.meeting_time}}\nGoogle Meet: {{tg.meet_link}}\nBooking reference: {{tg.booking_id}}\n\nThe Google Calendar invite has been sent to the customer."
+          }
+        }
+      }
+    },
+    {
+      "id": "90307512-77b1-42d6-b652-b8c9748566cf",
+      "type": "endFlowNode",
+      "position": {
+        "x": 0,
+        "y": 520
+      },
+      "data": {
+        "title": "endFlowNode_1",
+        "displayName": "End",
+        "description": ""
+      }
+    }
+  ],
+  "_edges": [
+    {
+      "id": "flow-edge-7d7e5924-3213-4499-82bf-4a5e80a97a41",
+      "source": "9c872a65-e25f-4f4b-9c1a-1a9843201643",
+      "target": "ad2baac7-6ecd-4ff4-8b94-b75dbadec797",
+      "sourceHandle": "next-step-9c872a65-e25f-4f4b-9c1a-1a9843201643",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-ab39d245-092d-4073-a18b-bcc60d2ef6e0",
+      "source": "ad2baac7-6ecd-4ff4-8b94-b75dbadec797",
+      "target": "90307512-77b1-42d6-b652-b8c9748566cf",
+      "sourceHandle": "next-step-ad2baac7-6ecd-4ff4-8b94-b75dbadec797",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    }
+  ]
+}

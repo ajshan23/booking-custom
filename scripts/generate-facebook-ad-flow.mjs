@@ -243,6 +243,37 @@ const quiet = split('Customer left or went quiet', 'halted === "exit"'); edge(co
 // Simple grid layout; tidy it with the editor's auto-layout after import.
 nodes.forEach((n, i) => { n.position = { x: (i % 5) * 340, y: Math.floor(i / 5) * 230 }; });
 
+// ---------------------------------------------------------------- 3. Organizer alert flow
+// demo.booked → Internal alert (WhatsApp template + email). Recipients are picked in the Worker.
+const alertNodes = [], alertEdges = [];
+const alertTrigger = { id: randomUUID(), type: 'triggerNode', position: { x: 0, y: 0 }, data: {
+  title: 'triggerNode_1', displayName: 'Demo booked', description: '', trigger: 'custom_integration',
+  topic: 'custom:REPLACE_WITH_INTEGRATION:demo.booked', trigger_topic_title: 'demo.booked',
+  trigger_topic_description: 'Sent by the Demo booking flow after a demo is confirmed'
+} };
+const fields = { customer_name: '{{tg.customername}}', customer_phone: '{{tg.customerphonenumber}}', customer_email: '{{tg.customer_email}}', meeting_time: '{{tg.meeting_time}}', meet_link: '{{tg.meet_link}}' };
+const alertNode = { id: randomUUID(), type: 'internalAlertNode', position: { x: 0, y: 260 }, data: {
+  title: 'internalAlertNode_1', displayName: 'Alert the organizer', description: '',
+  alert: {
+    version: 1, via: ['whatsapp', 'email'],
+    whatsapp: { template_mode: 'inline', inline_template: {
+      category: 'UTILITY', language: 'en',
+      // Meta rejects a template body that starts or ends with a variable.
+      body: 'New demo booked ✅\n\nCustomer: {{customer_name}}\nWhatsApp: {{customer_phone}}\nEmail: {{customer_email}}\nWhen: {{meeting_time}}\nGoogle Meet: {{meet_link}}\n\nThe Google Calendar invite has been sent to the customer.',
+      mapping: fields,
+      samples: { customer_name: 'Ajmal', customer_phone: '971501234567', customer_email: 'ajmal@company.com', meeting_time: 'Mon, 2 Nov 2026, 4:00 PM–4:15 PM (Asia/Dubai)', meet_link: 'https://meet.google.com/abc-defg-hij' }
+    } },
+    email: {
+      subject: 'New demo booked: {{tg.customername}} — {{tg.meeting_time}}',
+      body: 'A new FlowFlex demo was booked from WhatsApp.\n\nCustomer: {{tg.customername}}\nWhatsApp: {{tg.customerphonenumber}}\nEmail: {{tg.customer_email}}\nWhen: {{tg.meeting_time}}\nGoogle Meet: {{tg.meet_link}}\nBooking reference: {{tg.booking_id}}\n\nThe Google Calendar invite has been sent to the customer.'
+    }
+  }
+} };
+const alertEnd = { id: randomUUID(), type: 'endFlowNode', position: { x: 0, y: 520 }, data: { title: 'endFlowNode_1', displayName: 'End', description: '' } };
+alertNodes.push(alertTrigger, alertNode, alertEnd);
+for (const [a, b] of [[alertTrigger, alertNode], [alertNode, alertEnd]]) alertEdges.push({ id: `flow-edge-${randomUUID()}`, source: a.id, target: b.id, sourceHandle: `next-step-${a.id}`, targetHandle: 'target', ...edgeStyle });
+writeFileSync(`${outDir}/demo-booked-alert-flow.json`, JSON.stringify({ _nodes: alertNodes, _edges: alertEdges }, null, 2) + '\n');
+
 writeFileSync(`${outDir}/inbound-facebook-ad-flow.json`, JSON.stringify(ad, null, 2) + '\n');
 writeFileSync(`${outDir}/demo-booking-flow.json`, JSON.stringify({ _nodes: nodes, _edges: edges }, null, 2) + '\n');
 console.log(`Ad flow: ${ad._nodes.length} nodes. Booking flow: ${nodes.length} nodes, ${edges.length} edges.`);
