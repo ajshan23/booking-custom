@@ -193,6 +193,14 @@ test('the full HTTP contract supports booking, polling and cancellation', async 
   const session = await post('/v1/sessions').send({ customerRef: 'flowflex-contact', name: 'Arun', email: 'arun@example.com', timezone: 'Asia/Kolkata', meetingType: 'support' }).expect(201);
   const base = `/v1/sessions/${session.body.sessionId}`;
   await post(`${base}/interpret`).send({ text: '2026-09-21' }).expect(200);
+  // The opt-in "Another day" row keeps the list within WhatsApp's ten rows.
+  const withOtherDay = await post(`${base}/availability`).send({ page: 0, otherDay: 'Another day' }).expect(200);
+  const otherRows = withOtherDay.body.data.slots.map((slot: { id: string }) => slot.id);
+  assert.equal(otherRows.length, 10); assert.deepEqual(otherRows.slice(-2), ['__next__', '__date__']);
+  assert.equal(withOtherDay.body.data.slots.at(-1).title, 'Another day');
+  const otherSecond = await post(`${base}/availability`).send({ page: 1, otherDay: 'Another day' }).expect(200);
+  assert.ok(!otherRows.includes(otherSecond.body.data.slots[0].id), 'page 2 continues after the 8 slots on page 1');
+  assert.equal(otherSecond.body.data.slots.at(-1).id, '__date__');
   const firstPage = await post(`${base}/availability`).send({ page: 0 }).expect(200);
   assert.equal(firstPage.body.status, 'slots_available'); assert.match(firstPage.body.message, /page 1/);
   assert.equal(firstPage.body.data.page, 0); assert.equal(firstPage.body.data.hasMore, true);

@@ -123,8 +123,8 @@ export function createApp(config: Config, service: BookingService, google: Googl
     res.json(await service.interpret(id.parse(req.params.id), body.text));
   });
   sessionRoutes.post('/sessions/:id/availability', async (req, res) => {
-    const body = z.object({ page: z.coerce.number().int().min(0).max(9).default(0) }).strict().parse(req.body ?? {});
-    res.json(await service.availability(id.parse(req.params.id), body.page));
+    const body = z.object({ page: z.coerce.number().int().min(0).max(9).default(0), otherDay: z.string().trim().min(1).max(24).optional() }).strict().parse(req.body ?? {});
+    res.json(await service.availability(id.parse(req.params.id), body.page, body.otherDay));
   });
   sessionRoutes.post('/sessions/:id/select', async (req, res) => {
     const body = z.object({ selection: z.string().trim().min(1).max(100) }).strict().parse(req.body);

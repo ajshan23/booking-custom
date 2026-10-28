@@ -30,7 +30,8 @@ const T = {
     email: 'Great! 🙌 What email should we send the Google Meet invite to?',
     email_retry: "That email doesn't look right. Please type a valid address, e.g. name@company.com",
     date: '📅 Which day works for your 15-minute demo?\n\nYou can write things like *tomorrow*, *Monday after 3 pm* or *next week*. Times are shown in',
-    slots: 'Here are the free times 👇 Tap *Times* to pick one.',
+    slots: 'Here are the free times 👇 Tap *Times* to pick one. Need a different day? Choose *Another day* at the end of the list.',
+    other_day: '📅 Another day',
     list_button: 'Times',
     confirm: 'Please confirm your demo:',
     change: 'No problem. Which other day works for you?',
@@ -45,7 +46,8 @@ const T = {
     email: "Perfetto! 🙌 A quale email inviamo l'invito Google Meet?",
     email_retry: "L'email non sembra corretta. Scrivi un indirizzo valido, ad es. nome@azienda.com",
     date: '📅 Quale giorno va bene per la demo di 15 minuti?\n\nPuoi scrivere ad esempio *domani*, *lunedì dopo le 15* o *la prossima settimana*. Orari mostrati in',
-    slots: 'Ecco gli orari liberi 👇 Tocca *Orari* per sceglierne uno.',
+    slots: 'Ecco gli orari liberi 👇 Tocca *Orari* per sceglierne uno. Ti serve un altro giorno? Scegli *Un altro giorno* in fondo alla lista.',
+    other_day: '📅 Un altro giorno',
     list_button: 'Orari',
     confirm: 'Conferma la tua demo:',
     change: 'Nessun problema. Quale altro giorno ti va bene?',
@@ -60,7 +62,8 @@ const T = {
     email: '¡Genial! 🙌 ¿A qué email enviamos la invitación de Google Meet?',
     email_retry: 'Ese email no parece correcto. Escribe una dirección válida, p. ej. nombre@empresa.com',
     date: '📅 ¿Qué día te viene bien para la demo de 15 minutos?\n\nPuedes escribir por ejemplo *mañana*, *lunes después de las 15* o *la próxima semana*. Horarios en',
-    slots: 'Estos son los horarios libres 👇 Toca *Horarios* para elegir uno.',
+    slots: 'Estos son los horarios libres 👇 Toca *Horarios* para elegir uno. ¿Necesitas otro día? Elige *Otro día* al final de la lista.',
+    other_day: '📅 Otro día',
     list_button: 'Horarios',
     confirm: 'Confirma tu demo:',
     change: 'Sin problema. ¿Qué otro día te viene bien?',
@@ -219,14 +222,14 @@ const unavailable = split('Date service failed', `!${alias(interpret)}.ok && ${a
 const dateFailed = save('Date service failed: hand over', { halted: 'human' }); edge(unavailable, dateFailed, 'yes'); edge(dateFailed, bookingEnd);
 // Clarifying questions come back in the customer's own language.
 const dateRetry = save('Ask again with the clarifying question', { booking_stage: 'date', date_prompt: `{{${alias(interpret)}.data.message}}` }); edge(unavailable, dateRetry, 'no'); edge(dateRetry, bookingEnd);
-const firstPage = api('Find free times', `/v1/sessions/${sessionId}/availability`, { page: 0 }); edge(resolved, firstPage, 'yes');
+const firstPage = api('Find free times', `/v1/sessions/${sessionId}/availability`, { page: 0, otherDay: '{{bk_t_other_day}}' }); edge(resolved, firstPage, 'yes');
 const hasSlots = split('Free times found', `${alias(firstPage)}.ok && ${alias(firstPage)}.data.status === "slots_available"`); edge(firstPage, hasSlots);
 const toSlots = save('Show the times', { booking_stage: 'slot', slot_page: 0 }); edge(hasSlots, toSlots, 'yes'); edge(toSlots, bookingEnd);
 // The no-slot message names the next days that do have free times.
 const noSlots = save('No free times: ask for another day', { booking_stage: 'date', date_prompt: `{{${alias(firstPage)}.data.message || bk_t_change}}` }); edge(hasSlots, noSlots, 'no'); edge(noSlots, bookingEnd);
 
 const isSlot = split('Step: choose a time', 'booking_stage === "slot"'); edge(isDate, isSlot, 'no');
-const page = api('Load a page of times', `/v1/sessions/${sessionId}/availability`, { page: '{{slot_page}}' }); edge(isSlot, page, 'yes');
+const page = api('Load a page of times', `/v1/sessions/${sessionId}/availability`, { page: '{{slot_page}}', otherDay: '{{bk_t_other_day}}' }); edge(isSlot, page, 'yes');
 const slotList = node('listMessageNode', 'Pick a time', {
   to: TO, message_type: 'interactive', options_mode: 'dynamic',
   dynamic_options: { source: ref(page, 'data.data.slots'), id: '{{item.id}}', title: '{{item.title}}', description: '{{item.description}}', section_title: 'Available times', limit: 10 },
@@ -237,7 +240,10 @@ const slotTimeout = save('Time reply timed out', { halted: 'exit' }); edge(slotL
 const slotFailed = save('Times could not be shown', { halted: 'human' }); edge(slotList, slotFailed, 'empty'); edge(slotList, slotFailed, 'invalid'); edge(slotFailed, bookingEnd);
 const more = split('Customer chose More times', `${alias(slotList)}.response.id === "__next__"`); edge(slotList, more, 'selected');
 const nextPage = save('Next page of times', { slot_page: '{{slot_page + 1}}' }); edge(more, nextPage, 'yes'); edge(nextPage, bookingEnd);
-const select = api('Hold the chosen time', `/v1/sessions/${sessionId}/select`, { selection: ref(slotList, 'response.id') }); edge(more, select, 'no');
+// Lists ignore typed text, so "Another day" is a row the customer can tap.
+const otherDay = split('Customer chose Another day', `${alias(slotList)}.response.id === "__date__"`); edge(more, otherDay, 'no');
+const toDate = save('Ask for another day', { booking_stage: 'date', slot_page: 0, date_prompt: '{{bk_t_change}}' }); edge(otherDay, toDate, 'yes'); edge(toDate, bookingEnd);
+const select = api('Hold the chosen time', `/v1/sessions/${sessionId}/select`, { selection: ref(slotList, 'response.id') }); edge(otherDay, select, 'no');
 const selectedOK = split('Time ready to confirm', `${alias(select)}.ok && ${alias(select)}.data.status === "awaiting_confirmation"`); edge(select, selectedOK);
 const reselect = save('Time expired: choose again', { booking_stage: 'date', date_prompt: '{{bk_t_change}}' }); edge(selectedOK, reselect, 'no'); edge(reselect, bookingEnd);
 const toConfirm = save('Ask to confirm', {

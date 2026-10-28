@@ -80,7 +80,9 @@ function scenario(mode, lang = 'en', compiled = bookingFlow) {
           const built = buildDynamicOptions(resolve(a.args.dynamic_options.source, ctx), a.args.dynamic_options, 'list');
           assert.equal(built.outcome, 'ready'); assert.ok(built.rows.length <= 10);
           sent.push(args.payload.interactive.body.text);
-          const index = mode === 'more_times' && lists++ === 0 ? built.rows.findIndex(r => r.id === '__next__') : 0;
+          const first = lists++ === 0;
+          const index = mode === 'more_times' && first ? built.rows.findIndex(r => r.id === '__next__')
+            : mode === 'another_day' && first ? built.rows.findIndex(r => r.id === '__date__') : 0;
           value = mode === 'slot_silence' ? { outcome: 'no_response' } : { outcome: 'selected', response: built.rows[index] };
         } else if (a.name === 'sendWhatsappMsg') {
           const interactive = args.payload.interactive;
@@ -127,8 +129,9 @@ function scenario(mode, lang = 'en', compiled = bookingFlow) {
             const page = args.body.page; assert.ok(Number.isInteger(page));
             if (mode === 'no_slots' && availability === 1) data = { status: 'no_slots', message: 'No free times on Mon, 2 Nov. Free times on: Tue, 3 Nov.', data: { slots: [] } };
             else {
-              const slots = page === 0 ? Array.from({ length: 9 }, (_, i) => ({ id: `slot-${i + 1}`, title: `${i + 9}:00 AM–${i + 9}:30 AM`, description: 'Mon, 2 Nov 2026 · Asia/Dubai' })).concat({ id: '__next__', title: 'More times', description: 'Show the next 1 available times' })
-                : [{ id: 'slot-10', title: '6:00 PM–6:30 PM', description: 'Mon, 2 Nov 2026 · Asia/Dubai' }];
+              assert.equal(args.body.otherDay, { en: '📅 Another day', it: '📅 Un altro giorno', es: '📅 Otro día' }[lang]);
+              const slots = (page === 0 ? Array.from({ length: 8 }, (_, i) => ({ id: `slot-${i + 1}`, title: `${i + 9}:00 AM–${i + 9}:30 AM`, description: 'Mon, 2 Nov 2026 · Asia/Dubai' })).concat({ id: '__next__', title: 'More times', description: 'Show the next 1 available times' })
+                : [{ id: 'slot-10', title: '6:00 PM–6:30 PM', description: 'Mon, 2 Nov 2026 · Asia/Dubai' }]).concat({ id: '__date__', title: args.body.otherDay, description: '' });
               data = { status: 'slots_available', message: 'Available times', data: { slots, page } };
             }
           } else if (url.endsWith('/select')) {
@@ -162,7 +165,7 @@ function scenario(mode, lang = 'en', compiled = bookingFlow) {
   const bookCalls = api.filter(x => x.url.endsWith('/book')).length;
   const events = api.filter(x => x.url.includes('/v1/events/'));
   const confirmed = sent.find(m => m.startsWith('🎉'));
-  const booked = ['happy', 'more_times', 'slot_race', 'clarify', 'no_slots', 'email_retry', 'change_time'].includes(mode);
+  const booked = ['happy', 'another_day', 'more_times', 'slot_race', 'clarify', 'no_slots', 'email_retry', 'change_time'].includes(mode);
   if (booked) {
     assert.ok(confirmed?.includes('https://meet.google.com/abc-defg-hij') && confirmed.includes('Mon, 2 Nov 2026, 9:00 AM'), `${mode}: ${confirmed}`);
     assert.ok(confirmed.includes({ en: 'Your FlowFlex demo', it: 'La tua demo', es: 'Tu demo' }[lang]), `${mode}: wrong language`);
@@ -176,11 +179,12 @@ function scenario(mode, lang = 'en', compiled = bookingFlow) {
   if (['email_silence', 'date_silence', 'slot_silence', 'confirm_silence', 'not_now'].includes(mode)) assert.match(last, /^No problem|^Nessun problema|^Sin problema/, `${mode}: ${last}`);
   if (mode === 'clarify') assert.ok(sent.includes('Quale lunedì intendi?'));
   if (mode === 'no_slots') assert.ok(sent.some(m => m.startsWith('No free times')));
+  if (mode === 'another_day') { assert.equal(lists, 2); assert.ok(sent.includes('No problem. Which other day works for you?')); assert.equal(interprets, 2); }
   console.log(`PASS ${lang} ${mode} (${sent.length} messages)`);
 }
 
 for (const lang of ['en', 'it', 'es']) { scenario('book', lang, adFlow); scenario('event_fails', lang, adFlow); }
 scenario('not_now', 'en', adFlow);
 for (const lang of ['en', 'it', 'es']) scenario('happy', lang);
-for (const mode of ['more_times', 'slot_race', 'clarify', 'no_slots', 'email_retry', 'change_time', 'talk_to_team', 'date_down', 'email_silence', 'date_silence', 'slot_silence', 'confirm_silence']) scenario(mode, mode === 'clarify' ? 'it' : 'en');
+for (const mode of ['another_day', 'more_times', 'slot_race', 'clarify', 'no_slots', 'email_retry', 'change_time', 'talk_to_team', 'date_down', 'email_silence', 'date_silence', 'slot_silence', 'confirm_silence']) scenario(mode, mode === 'clarify' ? 'it' : 'en');
 console.log('All scenarios passed. No live API or WhatsApp calls were made.');

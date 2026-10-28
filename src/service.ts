@@ -31,7 +31,8 @@ function noSlotsMessage(dates: string[], timezone: string, period: Interpretatio
   const missing = `There are no free times ${describeRequest(dates, timezone, period, window)}.`;
   if (!suggested?.suggestions.length) return `${missing} Please choose a later date.`;
   const list = suggested.suggestions.map(s => `${s.title} (${s.slots} free time${s.slots === 1 ? '' : 's'})`).join(', ');
-  const when = suggested.anyTime && describeTime(period, window, '') ? ` Nothing is free ${describeTime(period, window, '')} in the next two weeks, but these days have other times:` : ' The next days with free times are:';
+  const timed = describeTime(period, window, '');
+  const when = suggested.anyTime && timed ? ` Nothing is free ${timed} in the next two weeks, but these days have other times:` : ` The next days with free times${suggested.anyTime ? '' : describeTime(period, window, ' ')} are:`;
   return `${missing}${when} ${list}. Reply with one of these dates or another date.`;
 }
 export class BookingService {
@@ -127,7 +128,8 @@ export class BookingService {
     }));
     return { suggestions, anyTime };
   }
-  async availability(id: string, page = 0) {
+  // otherDay: when set, the list ends with a row of that title (id __date__) for choosing another day.
+  async availability(id: string, page = 0, otherDay?: string) {
     const config = await this.settings.config();
     const s = await this.session(id);
     if (!s.date) throw new ApiError(422, 'date_required', 'Please clarify the requested date first.');
@@ -148,14 +150,15 @@ export class BookingService {
     }
     const multiDay = new Set(slots.map(slot => DateTime.fromISO(slot.start).setZone(s.timezone).toISODate())).size > 1;
 
-    const pageSize = 9;
+    // WhatsApp lists allow ten rows. "Another day" takes one; "More times" takes
+    // one only while another full or partial page remains.
+    const capacity = otherDay ? 9 : 10;
+    const pageSize = capacity - 1;
     const offset = page * pageSize;
     if (slots.length && offset >= slots.length) throw new ApiError(422, 'page_out_of_range', 'There are no more available-time pages.');
     const remaining = slots.slice(offset);
-    // WhatsApp lists allow ten rows. Reserve the tenth row for navigation only
-    // while another full or partial page remains.
-    const hasMore = remaining.length > 10;
-    const pageSlots = remaining.slice(0, hasMore ? pageSize : 10);
+    const hasMore = remaining.length > capacity;
+    const pageSlots = remaining.slice(0, hasMore ? pageSize : capacity);
     const rows = pageSlots.map((slot, i) => ({
       ...slot,
       choice: String(offset + i + 1),
@@ -175,7 +178,10 @@ export class BookingService {
       label: 'More times',
       choice: '__next__',
       title: 'More times',
-      description: `Show the next ${Math.min(10, slots.length - offset - pageSize)} available times`
+      description: `Show the next ${Math.min(capacity, slots.length - offset - pageSize)} available times`
+    });
+    if (otherDay && pageSlots.length) rows.push({
+      id: '__date__', start: '', end: '', expiresAt: rows[0].expiresAt, label: otherDay, choice: '__date__', title: otherDay, description: ''
     });
     const message = pageSlots.length
       ? `Available times (${s.timezone}), page ${page + 1}:\n${pageSlots.map((slot, i) => `${offset + i + 1}. ${slot.label}`).join('\n')}${hasMore ? '\nChoose More times to see the next page.' : ''}\nThese times are not reserved until you confirm.`
