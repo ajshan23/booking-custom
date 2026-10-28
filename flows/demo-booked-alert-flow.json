@@ -1,7 +1,7 @@
 {
   "_nodes": [
     {
-      "id": "9c872a65-e25f-4f4b-9c1a-1a9843201643",
+      "id": "1556be4f-6641-4d8e-b6df-e2407e2769ba",
       "type": "triggerNode",
       "position": {
         "x": 0,
@@ -18,7 +18,7 @@
       }
     },
     {
-      "id": "ad2baac7-6ecd-4ff4-8b94-b75dbadec797",
+      "id": "d8f3c5a1-e30f-4f00-94aa-e4920c3a79a0",
       "type": "internalAlertNode",
       "position": {
         "x": 0,
@@ -64,7 +64,7 @@
       }
     },
     {
-      "id": "90307512-77b1-42d6-b652-b8c9748566cf",
+      "id": "fdc78ad8-eaec-40d9-97d9-9721d37a6b6b",
       "type": "endFlowNode",
       "position": {
         "x": 0,
@@ -79,10 +79,10 @@
   ],
   "_edges": [
     {
-      "id": "flow-edge-7d7e5924-3213-4499-82bf-4a5e80a97a41",
-      "source": "9c872a65-e25f-4f4b-9c1a-1a9843201643",
-      "target": "ad2baac7-6ecd-4ff4-8b94-b75dbadec797",
-      "sourceHandle": "next-step-9c872a65-e25f-4f4b-9c1a-1a9843201643",
+      "id": "flow-edge-e93f3c47-c428-4426-8240-e2331c44d483",
+      "source": "1556be4f-6641-4d8e-b6df-e2407e2769ba",
+      "target": "d8f3c5a1-e30f-4f00-94aa-e4920c3a79a0",
+      "sourceHandle": "next-step-1556be4f-6641-4d8e-b6df-e2407e2769ba",
       "targetHandle": "target",
       "type": "button",
       "style": {
@@ -95,10 +95,10 @@
       }
     },
     {
-      "id": "flow-edge-ab39d245-092d-4073-a18b-bcc60d2ef6e0",
-      "source": "ad2baac7-6ecd-4ff4-8b94-b75dbadec797",
-      "target": "90307512-77b1-42d6-b652-b8c9748566cf",
-      "sourceHandle": "next-step-ad2baac7-6ecd-4ff4-8b94-b75dbadec797",
+      "id": "flow-edge-ff7a2bf8-312e-4d6d-8400-1b76b0191a83",
+      "source": "d8f3c5a1-e30f-4f00-94aa-e4920c3a79a0",
+      "target": "fdc78ad8-eaec-40d9-97d9-9721d37a6b6b",
+      "sourceHandle": "next-step-d8f3c5a1-e30f-4f00-94aa-e4920c3a79a0",
       "targetHandle": "target",
       "type": "button",
       "style": {

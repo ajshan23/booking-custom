@@ -182,7 +182,6 @@
           "action": "add",
           "tags": [
             {
-              "id": "6a3a4608e836825224c7d660",
               "name": "s0-ad-clicked"
             }
           ]
@@ -192,7 +191,7 @@
           "to": "{{tg.from}}",
           "action": "add",
           "tags": [
-            "6a3a4608e836825224c7d660"
+            "s0-ad-clicked"
           ]
         }
       },
@@ -218,7 +217,6 @@
           "action": "add",
           "tags": [
             {
-              "id": "6a941bacfec3b2e7ffbc5658",
               "name": "s0-google-ad"
             }
           ]
@@ -228,7 +226,7 @@
           "to": "{{tg.from}}",
           "action": "add",
           "tags": [
-            "6a941bacfec3b2e7ffbc5658"
+            "s0-google-ad"
           ]
         }
       },
@@ -2399,13 +2397,13 @@
                 "type": "contact_tags",
                 "condition": "tags_any",
                 "value": [
-                  "6ad46e45f966c668355be043"
+                  "name:skip-new-campaign"
                 ],
                 "id": "a4a7ca76-125d-4645-a108-19e821bf533d",
                 "source": "contact_tags",
                 "variable_type": "any",
                 "tag_names": {
-                  "6ad46e45f966c668355be043": "skip-new-campaign"
+                  "name:skip-new-campaign": "skip-new-campaign"
                 }
               }
             ],
@@ -7565,7 +7563,7 @@
       "focusable": true
     },
     {
-      "id": "flow-edge-48dbd7a6-8ab5-45e7-b556-156582bf067b",
+      "id": "flow-edge-4131ad20-25ac-49f0-a691-0179bdc3bfc0",
       "source": "7effd51e-9337-4a33-823e-87627c0be416",
       "target": "5e0b400d-13a6-42bf-9e35-622cee74a2f7",
       "sourceHandle": "success-7effd51e-9337-4a33-823e-87627c0be416",
@@ -7581,7 +7579,7 @@
       }
     },
     {
-      "id": "flow-edge-6d9d8327-dab1-4488-bb28-8f5f10f3dc71",
+      "id": "flow-edge-ea4155c8-4bc1-4bf9-94e0-f7cb91010daa",
       "source": "7effd51e-9337-4a33-823e-87627c0be416",
       "target": "3c3740c3-772d-4ee6-bfa9-f6f86c46c39c",
       "sourceHandle": "http-error-7effd51e-9337-4a33-823e-87627c0be416",
@@ -7597,7 +7595,7 @@
       }
     },
     {
-      "id": "flow-edge-037a062e-3b13-4674-85c2-ae8707ead6e7",
+      "id": "flow-edge-5112e211-0d38-4a5b-8b21-565fec509c9c",
       "source": "7effd51e-9337-4a33-823e-87627c0be416",
       "target": "3c3740c3-772d-4ee6-bfa9-f6f86c46c39c",
       "sourceHandle": "request-failed-7effd51e-9337-4a33-823e-87627c0be416",
@@ -7613,7 +7611,7 @@
       }
     },
     {
-      "id": "flow-edge-a72f49e2-6ea9-4b44-ab04-7a8e6bbee5de",
+      "id": "flow-edge-642a0981-324b-4ad3-a6ca-2663b4ee055a",
       "source": "13a703b3-cabc-5457-96dd-c33e2aec00f0",
       "target": "5e0b400d-13a6-42bf-9e35-622cee74a2f7",
       "sourceHandle": "success-13a703b3-cabc-5457-96dd-c33e2aec00f0",
@@ -7629,7 +7627,7 @@
       }
     },
     {
-      "id": "flow-edge-232d5c10-287f-4381-9be5-bd5f0b1945cc",
+      "id": "flow-edge-04ca3291-047b-42cc-ad20-811a1faa1dcd",
       "source": "13a703b3-cabc-5457-96dd-c33e2aec00f0",
       "target": "c6bb172b-f38e-51a1-b402-91068ce5281c",
       "sourceHandle": "http-error-13a703b3-cabc-5457-96dd-c33e2aec00f0",
@@ -7645,7 +7643,7 @@
       }
     },
     {
-      "id": "flow-edge-c0184ccf-fa86-471a-b7c7-b8b026f9d1ef",
+      "id": "flow-edge-69fc5be7-b302-4a62-897e-8e5aff20a742",
       "source": "13a703b3-cabc-5457-96dd-c33e2aec00f0",
       "target": "c6bb172b-f38e-51a1-b402-91068ce5281c",
       "sourceHandle": "request-failed-13a703b3-cabc-5457-96dd-c33e2aec00f0",
@@ -7661,7 +7659,7 @@
       }
     },
     {
-      "id": "flow-edge-44340487-6f1d-48c8-8d61-cebfc5953cd1",
+      "id": "flow-edge-6aba3a8e-abee-4032-9914-f40ebaff3a85",
       "source": "f08002aa-36ca-5f65-a2f2-4da3d523551f",
       "target": "5e0b400d-13a6-42bf-9e35-622cee74a2f7",
       "sourceHandle": "success-f08002aa-36ca-5f65-a2f2-4da3d523551f",
@@ -7677,7 +7675,7 @@
       }
     },
     {
-      "id": "flow-edge-dc423a68-0bfd-42ca-a389-472916c85b4d",
+      "id": "flow-edge-51dfe526-0280-4478-be2a-26c274918f2d",
       "source": "f08002aa-36ca-5f65-a2f2-4da3d523551f",
       "target": "f92c7fae-fe50-5ce5-998d-4467e86504a5",
       "sourceHandle": "http-error-f08002aa-36ca-5f65-a2f2-4da3d523551f",
@@ -7693,7 +7691,7 @@
       }
     },
     {
-      "id": "flow-edge-7c697893-33be-4f1f-9cd2-5460e70ddaf3",
+      "id": "flow-edge-48cbcf67-e03e-4a85-af68-e74839a988aa",
       "source": "f08002aa-36ca-5f65-a2f2-4da3d523551f",
       "target": "f92c7fae-fe50-5ce5-998d-4467e86504a5",
       "sourceHandle": "request-failed-f08002aa-36ca-5f65-a2f2-4da3d523551f",

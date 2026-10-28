@@ -96,6 +96,27 @@ for (const [lang, ids] of Object.entries(AD)) {
   adEdge(n.id, ids.question, 'request-failed');
 }
 
+// Tags by name only: the Worker finds or creates each tag in its own workspace when
+// it is published, so the file carries no tag ids from this workspace.
+for (const n of ad._nodes) {
+  if (n.type === 'updateTagNode') {
+    const names = (n.data.meta_payload?.tags ?? []).map(t => (typeof t === 'object' ? t.name : '')).filter(Boolean);
+    n.data.meta_payload.tags = names.map(name => ({ name }));
+    if (n.data.form_payload) n.data.form_payload.tags = names;
+  }
+  const visit = value => {
+    if (!value || typeof value !== 'object') return;
+    if (value.source === 'contact_tags' && Array.isArray(value.value)) {
+      const labels = value.tag_names ?? {};
+      const names = value.value.map(id => labels[id] ?? (String(id).startsWith('name:') ? String(id).slice(5) : null)).filter(Boolean);
+      value.value = names.map(name => `name:${name}`);
+      value.tag_names = Object.fromEntries(names.map(name => [`name:${name}`, name]));
+    }
+    Object.values(value).forEach(visit);
+  };
+  visit(n.data);
+}
+
 // ---------------------------------------------------------------- 2. Booking flow
 const nodes = [], edges = [], counts = {};
 const node = (type, displayName, data = {}) => {
