@@ -14,7 +14,7 @@ async function api(path, options = {}) {
 }
 async function action(button, work) { button.disabled = true; try { await work(); } catch (e) { notice(e.message || 'Unable to complete the request.', true); } finally { button.disabled = false; } }
 function showTab(tab) {
-  for (const name of ['schedule', 'booking', 'settings']) { $(`${name}-panel`).hidden = name !== tab; const b = $(`${name}-tab`); b.classList.toggle('active', name === tab); if (name === tab) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); }
+  for (const name of ['schedule', 'booking', 'settings', 'chat']) { $(`${name}-panel`).hidden = name !== tab; const b = $(`${name}-tab`); b.classList.toggle('active', name === tab); if (name === tab) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); }
 }
 function fillSettings(data) {
   settingsVersion = data.version; settingsValues = data.values;
@@ -100,6 +100,7 @@ $('logout').addEventListener('click', () => action($('logout'), async () => {
 $('schedule-tab').addEventListener('click', () => showTab('schedule'));
 $('settings-tab').addEventListener('click', () => showTab('settings'));
 $('booking-tab').addEventListener('click', () => showTab('booking'));
+$('chat-tab').addEventListener('click', () => showTab('chat'));
 for (const day of ['today', 'tomorrow']) $(day).addEventListener('click', () => action($(day), async () => { filter = { day }; page = 1; notice(''); await loadSchedule(); }));
 $('schedule-date').addEventListener('change', () => { if ($('schedule-date').value) action($('refresh'), async () => { filter = { date: $('schedule-date').value }; page = 1; notice(''); await loadSchedule(); }); });
 $('refresh').addEventListener('click', () => action($('refresh'), async () => { notice(''); await Promise.all([loadSchedule(), loadGoogle()]); }));

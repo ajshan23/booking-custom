@@ -106,9 +106,11 @@ export function createApp(config: Config, service: BookingService, google: Googl
     const connection = await service.store.connections.findOne({ org: service.org });
     res.json({ status: connection?.state ?? 'not_connected', data: { calendarId: connection?.calendarId ?? null, bookingInProgress: Boolean(connection?.activeBooking) } });
   });
-  app.use('/v1', auth(config.SERVICE_API_KEY), limiter);
+  // The booking conversation API. Flowflex calls it with SERVICE_API_KEY; the portal's test chat
+  // reaches the same routes under /v1/admin/chat with the signed-in session.
+  const sessionRoutes = express.Router();
   const id = z.string().min(1).max(100);
-  app.post('/v1/sessions', async (req, res) => {
+  sessionRoutes.post('/sessions', async (req, res) => {
     const input = z.object({
       customerRef: z.string().min(1).max(200), name: z.string().trim().min(1).max(120),
       email: z.email().max(254), timezone: z.string().refine(IANAZone.isValidZone, 'Use an IANA timezone, e.g. Asia/Kolkata').optional(),
@@ -116,26 +118,28 @@ export function createApp(config: Config, service: BookingService, google: Googl
     }).strict().parse(req.body);
     res.status(201).json(await service.createSession(input));
   });
-  app.post('/v1/sessions/:id/interpret', async (req, res) => {
+  sessionRoutes.post('/sessions/:id/interpret', async (req, res) => {
     const body = z.object({ text: z.string().trim().min(1).max(1000) }).strict().parse(req.body);
     res.json(await service.interpret(id.parse(req.params.id), body.text));
   });
-  app.post('/v1/sessions/:id/availability', async (req, res) => {
+  sessionRoutes.post('/sessions/:id/availability', async (req, res) => {
     const body = z.object({ page: z.coerce.number().int().min(0).max(9).default(0) }).strict().parse(req.body ?? {});
     res.json(await service.availability(id.parse(req.params.id), body.page));
   });
-  app.post('/v1/sessions/:id/select', async (req, res) => {
+  sessionRoutes.post('/sessions/:id/select', async (req, res) => {
     const body = z.object({ selection: z.string().trim().min(1).max(100) }).strict().parse(req.body);
     res.json(await service.select(id.parse(req.params.id), body.selection));
   });
-  app.post('/v1/sessions/:id/book', async (req, res) => {
+  sessionRoutes.post('/sessions/:id/book', async (req, res) => {
     const body = z.object({ confirmed: z.literal(true), confirmationToken: z.uuid() }).strict().parse(req.body);
     const key = z.string().min(8).max(200).parse(req.get('idempotency-key'));
     const result = await service.book(id.parse(req.params.id), key, body.confirmationToken);
     res.status(['creating', 'reconciling', 'meet_pending'].includes(result.status) ? 202 : ['slot_unavailable', 'slot_expired', 'failed'].includes(result.status) ? 409 : 200).json(result);
   });
-  app.get('/v1/bookings/:id', async (req, res) => { res.json(service.bookingResult(await service.process(id.parse(req.params.id)))); });
-  app.post('/v1/bookings/:id/cancel', async (req, res) => { res.json(await service.cancel(id.parse(req.params.id))); });
+  sessionRoutes.get('/bookings/:id', async (req, res) => { res.json(service.bookingResult(await service.process(id.parse(req.params.id)))); });
+  sessionRoutes.post('/bookings/:id/cancel', async (req, res) => { res.json(await service.cancel(id.parse(req.params.id))); });
+  app.use('/v1/admin/chat', sessionRoutes);
+  app.use('/v1', auth(config.SERVICE_API_KEY), limiter, sessionRoutes);
   app.use((_req, _res, next) => next(new ApiError(404, 'not_found', 'Endpoint not found.')));
   const errors: ErrorRequestHandler = (error, _req, res, _next) => {
     let code = 500; let status = 'internal_error'; let message = 'The request could not be completed.';

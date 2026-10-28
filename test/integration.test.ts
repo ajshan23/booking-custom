@@ -240,6 +240,9 @@ test('portal sign-in uses username and password and a session cookie', async () 
   await request(app).get('/v1/admin/settings').set('Cookie', cookie).expect(200);
   await request(app).get('/v1/google/status').set('Cookie', cookie).expect(200);
   await request(app).post('/v1/sessions').set('Cookie', cookie).send({}).expect(401);
+  const chat = await request(app).post('/v1/admin/chat/sessions').set('Cookie', cookie).send({ customerRef: '+919876543210', name: 'Chat', email: 'chat@example.com' }).expect(201);
+  assert.equal(chat.body.data.timezone, 'Asia/Kolkata');
+  await request(app).post('/v1/admin/chat/sessions').set('Authorization', `Bearer ${config.SERVICE_API_KEY}`).send({ customerRef: '+919876543210', name: 'Chat', email: 'chat@example.com' }).expect(401);
   await request(app).post('/v1/auth/logout').set('Cookie', cookie).expect(200);
   await request(app).get('/v1/admin/settings').set('Cookie', cookie).expect(401);
 });
