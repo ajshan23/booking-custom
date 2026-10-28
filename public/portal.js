@@ -1,21 +1,14 @@
 'use strict';
 const $ = id => document.getElementById(id);
-let key = '', settingsVersion = 0, settingsValues = null, filter = { day: 'today' }, page = 1, querySequence = 0, dirty = false, scheduleTimezone = '';
+let settingsVersion = 0, settingsValues = null, filter = { day: 'today' }, page = 1, querySequence = 0, dirty = false, scheduleTimezone = '';
 let bookingDraft = null, bookingRequest = false;
 function notice(message, error = false) { $('notice').textContent = message; $('notice').className = error ? 'error' : ''; $('notice').hidden = !message; }
-function lock() {
-  key = ''; querySequence++; settingsValues = null; dirty = false;
-  $('workspace').hidden = true; $('logout').hidden = true; $('login').hidden = false;
-  $('bookings').replaceChildren(); $('blocks').replaceChildren(); $('block-form').reset(); scheduleTimezone = ''; $('settings-form').reset(); $('admin-key').value = '';
-  $('authorize').hidden = true; $('authorize').removeAttribute('href'); notice('');
-  resetBooking();
-}
+// The session cookie is HttpOnly; a 401 means it expired or was signed out elsewhere.
+function toLogin() { location.replace('/login'); }
 async function api(path, options = {}) {
-  const authKey = key;
-  const response = await fetch(path, { ...options, headers: { Authorization: `Bearer ${authKey}`, 'Content-Type': 'application/json', ...options.headers } });
-  if (authKey !== key) throw new Error('Portal locked.');
+  const response = await fetch(path, { ...options, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', ...options.headers } });
+  if (response.status === 401) { toLogin(); throw new Error('Session expired. Please sign in again.'); }
   const body = await response.json();
-  if (response.status === 401) lock();
   if (!response.ok) { const error = new Error(body.message || 'Request failed. Please retry.'); error.response = body; throw error; }
   return body;
 }
@@ -94,17 +87,16 @@ async function loadSchedule() {
     $('page-label').textContent = `Page ${page} of ${Math.max(1, Math.ceil(data.total / data.pageSize))}`;
   } catch (error) { if (sequence === querySequence) $('date-heading').textContent = 'Schedule could not be loaded'; throw error; }
 }
-$('login-form').addEventListener('submit', event => {
-  event.preventDefault();
-  action(event.submitter, async () => {
-    key = $('admin-key').value.trim();
+$('logout').addEventListener('click', () => action($('logout'), async () => {
+  await fetch('/v1/auth/logout', { method: 'POST', credentials: 'same-origin' }); toLogin();
+}));
+(async () => {
+  try {
     await loadSettings();
-    $('admin-key').value = ''; $('login').hidden = true; $('workspace').hidden = false; $('logout').hidden = false;
-    showTab('schedule'); notice('');
+    $('workspace').hidden = false; showTab('schedule');
     await Promise.all([loadGoogle(), loadSchedule()]);
-  });
-});
-$('logout').addEventListener('click', lock);
+  } catch (e) { notice(e.message || 'Unable to load the workspace.', true); }
+})();
 $('schedule-tab').addEventListener('click', () => showTab('schedule'));
 $('settings-tab').addEventListener('click', () => showTab('settings'));
 $('booking-tab').addEventListener('click', () => showTab('booking'));

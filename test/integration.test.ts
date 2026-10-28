@@ -216,7 +216,9 @@ test('the full HTTP contract supports booking, polling and cancellation', async 
 test('portal assets are served but admin data rejects service keys and anonymous callers', async () => {
   const app = createApp(config, service, { async connectUrl() { return 'https://example.com'; }, async callback() {} });
   const html = await request(app).get('/').expect(200);
-  assert.match(html.text, /Scheduling workspace/); assert.match(html.headers['content-security-policy'], /script-src 'self'/);
+  assert.match(html.text, /href="\/login"/); assert.match(html.headers['content-security-policy'], /script-src 'self'/);
+  assert.match((await request(app).get('/login').expect(200)).text, /id="password"/);
+  assert.match((await request(app).get('/portal').expect(200)).text, /Scheduling workspace/);
   await request(app).get('/portal.js').expect(200);
   await request(app).get('/v1/admin/settings').expect(401);
   await request(app).get('/v1/admin/schedule').set('Authorization', `Bearer ${config.SERVICE_API_KEY}`).expect(401);
@@ -224,6 +226,22 @@ test('portal assets are served but admin data rejects service keys and anonymous
   assert.equal(settings.body.data.source, 'environment');
   assert.ok(!JSON.stringify(settings.body).includes(config.GOOGLE_CLIENT_SECRET));
   assert.ok(!('SERVICE_API_KEY' in settings.body.data.values));
+});
+test('portal sign-in uses username and password and a session cookie', async () => {
+  const app = createApp(config, service, { async connectUrl() { return 'https://example.com'; }, async callback() {} });
+  await request(app).post('/v1/auth/login').send({ username: 'admin', password: 'wrong-password-123' }).expect(401);
+  await request(app).post('/v1/auth/login').send({ username: 'someone', password: config.ADMIN_PASSWORD }).expect(401);
+  await request(app).get('/v1/auth/session').expect(401);
+  const login = await request(app).post('/v1/auth/login').send({ username: 'admin', password: config.ADMIN_PASSWORD }).expect(200);
+  const cookie = String(login.headers['set-cookie']).split(';')[0];
+  assert.match(String(login.headers['set-cookie']), /HttpOnly; SameSite=Strict/);
+  assert.ok(!(await service.store.adminSessions.findOne({ _id: cookie.split('=')[1] })), 'raw token must not be stored');
+  await request(app).get('/v1/auth/session').set('Cookie', cookie).expect(200);
+  await request(app).get('/v1/admin/settings').set('Cookie', cookie).expect(200);
+  await request(app).get('/v1/google/status').set('Cookie', cookie).expect(200);
+  await request(app).post('/v1/sessions').set('Cookie', cookie).send({}).expect(401);
+  await request(app).post('/v1/auth/logout').set('Cookie', cookie).expect(200);
+  await request(app).get('/v1/admin/settings').set('Cookie', cookie).expect(401);
 });
 test('admin settings persist, reject stale revisions and cannot accept secrets', async () => {
   const app = createApp(config, service, { async connectUrl() { return 'https://example.com'; }, async callback() {} });

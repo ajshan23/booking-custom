@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { IANAZone } from 'luxon';
 import { z } from 'zod';
 import type { Config } from './config.js';
+import { AdminSessions } from './admin-auth.js';
 import { equalSecret } from './crypto.js';
 import { ApiError } from './types.js';
 import { BookingService } from './service.js';
@@ -24,8 +25,25 @@ export function createApp(config: Config, service: BookingService, google: Googl
     if (!equalSecret(token, key)) return next(new ApiError(401, 'unauthorized', 'A valid API key is required.'));
     next();
   };
+  const sessions = new AdminSessions(service.store, config);
+  // Portal requests carry the session cookie; scripts can still send ADMIN_API_KEY as a Bearer token.
+  const adminAuth: RequestHandler = (req, _res, next) => {
+    const token = req.get('authorization')?.replace(/^Bearer /i, '') ?? '';
+    if (token && equalSecret(token, config.ADMIN_API_KEY)) return next();
+    sessions.valid(req).then(ok => next(ok ? undefined : new ApiError(401, 'unauthorized', 'Please sign in.')), next);
+  };
   const limiter = rateLimit({ windowMs: 60000, limit: 60, standardHeaders: 'draft-8', legacyHeaders: false, handler: (_req, _res, next) => next(new ApiError(429, 'rate_limited', 'Too many requests. Please retry shortly.')) });
-  app.use(express.static(fileURLToPath(new URL('../public', import.meta.url)), { dotfiles: 'deny' }));
+  app.use(express.static(fileURLToPath(new URL('../public', import.meta.url)), { dotfiles: 'deny', extensions: ['html'] }));
+  // Failed sign-ins only: ten wrong passwords per IP every 15 minutes.
+  const loginLimiter = rateLimit({ windowMs: 15 * 60000, limit: 10, skipSuccessfulRequests: true, standardHeaders: 'draft-8', legacyHeaders: false, handler: (_req, _res, next) => next(new ApiError(429, 'rate_limited', 'Too many sign-in attempts. Try again in 15 minutes.')) });
+  app.post('/v1/auth/login', loginLimiter, async (req, res) => {
+    const body = z.object({ username: z.string().max(100), password: z.string().max(200) }).strict().parse(req.body);
+    if (!sessions.credentialsMatch(body.username.trim(), body.password)) throw new ApiError(401, 'invalid_credentials', 'Incorrect username or password.');
+    await sessions.start(req, res);
+    res.json({ status: 'signed_in' });
+  });
+  app.post('/v1/auth/logout', async (req, res) => { await sessions.end(req, res); res.json({ status: 'signed_out' }); });
+  app.get('/v1/auth/session', limiter, adminAuth, (_req, res) => { res.json({ status: 'signed_in' }); });
   // Public, static demo data only: no calendar access or booking side effects.
   app.options('/demo/list-options', limiter, (_req, res) => {
     res.set({ 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET', 'Access-Control-Allow-Headers': 'ngrok-skip-browser-warning' });
@@ -39,7 +57,7 @@ export function createApp(config: Config, service: BookingService, google: Googl
       { id: 'demo_evening', title: 'Evening', description: 'Demo option: 3:00 PM to 6:00 PM' },
     ] });
   });
-  app.use('/v1/admin', limiter, auth(config.ADMIN_API_KEY));
+  app.use('/v1/admin', limiter, adminAuth);
   app.get('/v1/admin/settings', async (_req, res) => { res.json({ status: 'ok', data: await service.settings.read() }); });
   app.put('/v1/admin/settings', async (req, res) => {
     const input = z.object({ version: z.number().int().min(0), values: settingsSchema }).strict().parse(req.body);
@@ -76,7 +94,7 @@ export function createApp(config: Config, service: BookingService, google: Googl
     try { await service.store.db.command({ ping: 1 }); res.json({ status: 'ok' }); }
     catch { res.status(503).json({ status: 'unavailable' }); }
   });
-  app.post('/v1/google/connect', auth(config.ADMIN_API_KEY), limiter, async (_req, res) => {
+  app.post('/v1/google/connect', limiter, adminAuth, async (_req, res) => {
     res.json({ status: 'authorization_required', data: { authorizationUrl: await google.connectUrl() } });
   });
   app.get('/v1/google/callback', limiter, async (req, res) => {
@@ -84,7 +102,7 @@ export function createApp(config: Config, service: BookingService, google: Googl
     await google.callback(query.state, query.error ? undefined : query.code);
     res.type('text').send('Google Calendar connected. You may close this window.');
   });
-  app.get('/v1/google/status', auth(config.ADMIN_API_KEY), async (_req, res) => {
+  app.get('/v1/google/status', limiter, adminAuth, async (_req, res) => {
     const connection = await service.store.connections.findOne({ org: service.org });
     res.json({ status: connection?.state ?? 'not_connected', data: { calendarId: connection?.calendarId ?? null, bookingInProgress: Boolean(connection?.activeBooking) } });
   });

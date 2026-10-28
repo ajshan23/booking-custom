@@ -8,6 +8,8 @@ const schema = z.object({
   PORT: positive(3080, 65535),
   MONGODB_URI: z.string().min(1), MONGODB_DATABASE: z.string().default('customcalander'),
   SERVICE_API_KEY: z.string().min(32), ADMIN_API_KEY: z.string().min(32),
+  // Portal sign-in. ADMIN_API_KEY still works as a Bearer token for scripts.
+  ADMIN_USERNAME: z.string().trim().min(3).max(100).default('admin'), ADMIN_PASSWORD: z.string().min(12, 'Use at least 12 characters').max(200),
   TOKEN_ENCRYPTION_KEY: z.string().refine(v => Buffer.from(v, 'base64').length === 32, 'Must encode 32 bytes'),
   ORGANIZATION_ID: z.string().min(1).default('flowflex-internal'),
   GOOGLE_CLIENT_ID: z.string().min(1), GOOGLE_CLIENT_SECRET: z.string().min(1),

@@ -40,7 +40,9 @@ PORT=3080
 MONGODB_URI=mongodb://127.0.0.1:27017          # add user:password@ and ?authSource=admin if MongoDB uses auth
 MONGODB_DATABASE=customcalander
 SERVICE_API_KEY=<new value>
-ADMIN_API_KEY=<new value>                      # this is the admin portal password
+ADMIN_API_KEY=<new value>                      # Bearer key for admin API scripts
+ADMIN_USERNAME=admin                           # portal sign-in at /login
+ADMIN_PASSWORD=<at least 12 characters>
 TOKEN_ENCRYPTION_KEY=<new value>               # never change it later: stored Google tokens depend on it
 GOOGLE_CLIENT_ID=<from Google Cloud>
 GOOGLE_CLIENT_SECRET=<from Google Cloud>
@@ -96,7 +98,7 @@ certbot --nginx -d booking.example.com
 
 1. Google Cloud Console → APIs & Services → Credentials → the OAuth client → add `https://booking.example.com/v1/google/callback` under Authorized redirect URIs.
 2. OAuth consent screen → publish the app (or set it to Internal on Google Workspace). In Testing mode the connection expires every 7 days.
-3. Open `https://booking.example.com`, unlock with `ADMIN_API_KEY`, and use **Connect Google** with the organizer account.
+3. Open `https://booking.example.com/login`, sign in with `ADMIN_USERNAME` / `ADMIN_PASSWORD`, and use **Connect Google** with the organizer account.
 
 ## 8. Point the Flowflex flow at it
 

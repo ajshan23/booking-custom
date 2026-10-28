@@ -7,6 +7,7 @@ export class Store {
   get connections() { return this.db.collection<Connection>('connections'); }
   get timeBlocks() { return this.db.collection<TimeBlock>('time_blocks'); }
   get oauthStates() { return this.db.collection<{ _id: string; org: string; expiresAt: Date }>('oauth_states'); }
+  get adminSessions() { return this.db.collection<{ _id: string; expiresAt: Date }>('admin_sessions'); }
   async init() {
     // Sessions reopened after a lost slot race hold several bookings; the session freeze keeps one in flight.
     const legacy = (await this.bookings.listIndexes().toArray().catch(() => [])).find(i => i.unique && i.key?.org === 1 && i.key?.sessionId === 1);
@@ -21,7 +22,8 @@ export class Store {
       this.timeBlocks.createIndex({ org: 1, start: 1, end: 1 }),
       this.db.collection('meeting_notifications').createIndex({ org: 1, bookingId: 1 }, { unique: true }),
       this.connections.createIndex({ org: 1 }, { unique: true }),
-      this.oauthStates.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 })
+      this.oauthStates.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 }),
+      this.adminSessions.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 })
     ]);
   }
 }
