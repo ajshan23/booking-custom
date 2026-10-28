@@ -43,7 +43,10 @@ Do not assume a date for an ambiguous numeric date, missing month or ambiguous w
       }
       if (!parsed.dates.length) throw new Error('Invalid interpreter output');
       return { status: 'resolved', date: parsed.dates[0], dates: parsed.dates.slice(0, 5), ...preferences };
-    } catch {
+    } catch (error) {
+      // Log only the failure kind (HTTP status, OpenAI error code), never customer text or keys.
+      const e = error as { status?: number; code?: string; name?: string };
+      console.error(JSON.stringify({ event: 'interpretation_failed', model: this.model, status: e?.status ?? null, code: e?.code ?? null, error: e?.name ?? 'Error' }));
       throw new ApiError(503, 'interpretation_unavailable', 'Date understanding is temporarily unavailable. Please try a date in YYYY-MM-DD format.');
     }
   }
