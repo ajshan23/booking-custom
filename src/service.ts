@@ -5,7 +5,7 @@ import { SettingsStore } from './settings.js';
 import { notificationStatus, prepareCustomFlowNotification } from './notifications.js';
 import type { Config } from './config.js';
 import { digest } from './crypto.js';
-import { candidateSlots, dateSpan, overlap, parseNumericDate, validateDate } from './dates.js';
+import { candidateSlots, dateSpan, overlap, parseDayOfMonth, parseNumericDate, validateDate } from './dates.js';
 import { knownInsertRejection } from './google.js';
 import { timezoneFromPhone } from './timezones.js';
 import { ApiError, type Booking, type BookingState, type CalendarProvider, type Connection, type DateInterpreter, type Interpretation, type MeetingType, type ProviderEvent, type Session, type TimeWindow } from './types.js';
@@ -66,7 +66,7 @@ export class BookingService {
     const config = await this.settings.config();
     const s = await this.session(id);
     if (s.bookingId) throw new ApiError(409, 'booking_exists', 'This session already has a booking request.');
-    const interpreted = parseNumericDate(text) ?? await this.interpreter.interpret(text, s.timezone, this.now(), s.history);
+    const interpreted = parseNumericDate(text) ?? parseDayOfMonth(text, s.timezone, this.now()) ?? await this.interpreter.interpret(text, s.timezone, this.now(), s.history);
     let dates: string[] = [];
     if (interpreted.status === 'resolved') {
       const today = DateTime.fromJSDate(this.now(), { zone: s.timezone }).toISODate()!;

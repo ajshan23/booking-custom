@@ -25,6 +25,21 @@ export function parseNumericDate(text: string): Interpretation | null {
   const date = DateTime.fromObject({ year, month, day });
   return date.isValid ? result('resolved', date.toISODate(), null) : result('invalid', null, 'That date does not exist. Please enter a date such as 20 September 2026.');
 }
+// A bare day of the month ("30", "30th") is the next date with that day: this
+// month if it has not passed, otherwise the next month that has it.
+export function parseDayOfMonth(text: string, timezone: string, now: Date): Interpretation | null {
+  const match = /^(\d{1,2})(?:st|nd|rd|th)?$/i.exec(text.trim());
+  if (!match) return null;
+  const day = Number(match[1]);
+  if (day < 1 || day > 31) return null;
+  const today = DateTime.fromJSDate(now, { zone: timezone }).startOf('day');
+  for (let i = 0; i < 3; i++) {
+    const month = today.startOf('month').plus({ months: i });
+    const date = DateTime.fromObject({ year: month.year, month: month.month, day }, { zone: timezone });
+    if (date.isValid && date >= today) return result('resolved', date.toISODate(), null);
+  }
+  return null;
+}
 export function validateDate(value: string, timezone: string, now: Date, horizon: number): string | null {
   if (!IANAZone.isValidZone(timezone)) return 'Please choose a valid timezone.';
   const date = DateTime.fromISO(value, { zone: timezone });

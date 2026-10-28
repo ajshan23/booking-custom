@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { candidateSlots, overlap, parseNumericDate, validateDate } from '../src/dates.js';
+import { candidateSlots, overlap, parseDayOfMonth, parseNumericDate, validateDate } from '../src/dates.js';
 import { encrypt, decrypt, equalSecret } from '../src/crypto.js';
 import { config } from './helpers.js';
 
@@ -49,4 +49,15 @@ test('token encryption detects tampering and does not expose credentials', () =>
   const parts = token.split('.'); parts[2] = Buffer.from('tampered').toString('base64');
   assert.throws(() => decrypt(parts.join('.'), config.TOKEN_ENCRYPTION_KEY));
   assert.equal(equalSecret('one', 'two'), false);
+});
+
+test('a bare day of the month is the next date with that day', () => {
+  const now = new Date('2026-10-28T12:00:00Z');
+  assert.equal(parseDayOfMonth('30', 'Asia/Kolkata', now)?.date, '2026-10-30');
+  assert.equal(parseDayOfMonth('30th', 'Asia/Kolkata', now)?.date, '2026-10-30');
+  assert.equal(parseDayOfMonth('28', 'Asia/Kolkata', now)?.date, '2026-10-28');
+  assert.equal(parseDayOfMonth('5', 'Asia/Kolkata', now)?.date, '2026-11-05');
+  assert.equal(parseDayOfMonth('31', 'Asia/Kolkata', new Date('2026-11-02T12:00:00Z'))?.date, '2026-12-31');
+  assert.equal(parseDayOfMonth('32', 'Asia/Kolkata', now), null);
+  assert.equal(parseDayOfMonth('tomorrow', 'Asia/Kolkata', now), null);
 });
