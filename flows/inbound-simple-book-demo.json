@@ -1,0 +1,337 @@
+{
+  "_nodes": [
+    {
+      "id": "ae2af6e8-0ae7-44dc-8e67-ade6b35820c5",
+      "type": "triggerNode",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "title": "triggerNode_1",
+        "displayName": "WhatsApp message",
+        "description": "",
+        "topic": "whatsapp.incoming_message",
+        "trigger": "whatsapp",
+        "trigger_topic_title": "WhatsApp Incoming Chat",
+        "trigger_topic_description": "Workflow starts when a new chat is created"
+      }
+    },
+    {
+      "id": "039d78ae-e561-4444-9f64-34a6cbc5282c",
+      "type": "buttonMessageNode",
+      "position": {
+        "x": 0,
+        "y": 220
+      },
+      "data": {
+        "title": "buttonMessageNode_1",
+        "displayName": "Welcome",
+        "description": "",
+        "to": "{{tg.from}}",
+        "message_type": "interactive",
+        "meta_payload": {
+          "type": "button",
+          "body": {
+            "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\nWould you like a quick 15-minute demo? Tap *Book a demo* to pick a time that suits you."
+          },
+          "action": {
+            "buttons": [
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_1",
+                  "title": "Book a demo"
+                }
+              },
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_2",
+                  "title": "Not now"
+                }
+              }
+            ]
+          }
+        },
+        "form_payload": {
+          "to": "{{tg.from}}",
+          "header_type": "none",
+          "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\nWould you like a quick 15-minute demo? Tap *Book a demo* to pick a time that suits you.",
+          "footer": "",
+          "buttons": [
+            {
+              "title": "Book a demo"
+            },
+            {
+              "title": "Not now"
+            }
+          ],
+          "is_response_wait": true,
+          "response_wait": "30",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text"
+        }
+      }
+    },
+    {
+      "id": "967e447f-88f1-4738-b448-ffc59fbe8cb0",
+      "type": "apiNode",
+      "position": {
+        "x": 0,
+        "y": 460
+      },
+      "data": {
+        "title": "apiNode_1",
+        "displayName": "Start demo booking",
+        "description": "",
+        "request_version": 2,
+        "outcome_mode": "branches",
+        "method": "POST",
+        "api_type": "custom",
+        "body_mode": "json",
+        "timeout_ms": 30000,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "url": "https://api.flowflex.ai/v1/events/ic_26c925f89d030f6e7dd48078",
+        "parameters": [],
+        "content_type": "application/json",
+        "headers": [
+          {
+            "key": "x-event",
+            "value": "demo.booking"
+          },
+          {
+            "key": "x-api-key",
+            "value": ""
+          },
+          {
+            "key": "x-api-secret",
+            "value": ""
+          }
+        ],
+        "body": {
+          "customer_phone": "{{tg.from}}",
+          "customer_name": "{{tg.name}}",
+          "lang": "en"
+        }
+      }
+    },
+    {
+      "id": "75912ca1-755f-47ef-bba1-1ee8956f53f4",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 380,
+        "y": 460
+      },
+      "data": {
+        "title": "whatsappTextNode_1",
+        "displayName": "Not now",
+        "description": "",
+        "to": "{{tg.from}}",
+        "message_type": "text",
+        "invalid_response_text": "Please provide a valid response",
+        "meta_payload": {
+          "body": "No problem. Message us here whenever you'd like a demo. Thank you!"
+        },
+        "form_payload": {
+          "to": "{{tg.from}}",
+          "body": "No problem. Message us here whenever you'd like a demo. Thank you!",
+          "is_response_wait": false,
+          "is_check_format": false,
+          "format_unit": "text",
+          "response_wait": "1",
+          "response_wait_unit": "minutes"
+        }
+      }
+    },
+    {
+      "id": "a29b974c-9d0a-4815-933c-04d248117fbe",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 380,
+        "y": 700
+      },
+      "data": {
+        "title": "whatsappTextNode_2",
+        "displayName": "Booking could not start",
+        "description": "",
+        "to": "{{tg.from}}",
+        "message_type": "text",
+        "invalid_response_text": "Please provide a valid response",
+        "meta_payload": {
+          "body": "Sorry, I couldn't open the booking right now. Our team will help you here in this chat."
+        },
+        "form_payload": {
+          "to": "{{tg.from}}",
+          "body": "Sorry, I couldn't open the booking right now. Our team will help you here in this chat.",
+          "is_response_wait": false,
+          "is_check_format": false,
+          "format_unit": "text",
+          "response_wait": "1",
+          "response_wait_unit": "minutes"
+        }
+      }
+    },
+    {
+      "id": "1cb5724d-32e0-4809-a31a-81c28aefa89a",
+      "type": "endFlowNode",
+      "position": {
+        "x": 0,
+        "y": 940
+      },
+      "data": {
+        "title": "endFlowNode_1",
+        "displayName": "End",
+        "description": ""
+      }
+    }
+  ],
+  "_edges": [
+    {
+      "id": "flow-edge-19ef44bb-a739-4a2e-9e80-ceabf5cfe77c",
+      "source": "ae2af6e8-0ae7-44dc-8e67-ade6b35820c5",
+      "target": "039d78ae-e561-4444-9f64-34a6cbc5282c",
+      "sourceHandle": "next-step-ae2af6e8-0ae7-44dc-8e67-ade6b35820c5",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-e7548db1-02b0-4328-a7e6-65d8a6a6ca17",
+      "source": "039d78ae-e561-4444-9f64-34a6cbc5282c",
+      "target": "967e447f-88f1-4738-b448-ffc59fbe8cb0",
+      "sourceHandle": "BUTTON_1-039d78ae-e561-4444-9f64-34a6cbc5282c",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-1ae61d9b-ea05-42ac-9451-dcfd6aaea560",
+      "source": "039d78ae-e561-4444-9f64-34a6cbc5282c",
+      "target": "75912ca1-755f-47ef-bba1-1ee8956f53f4",
+      "sourceHandle": "BUTTON_2-039d78ae-e561-4444-9f64-34a6cbc5282c",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-7720b0b2-4aef-4233-9a82-be3ccf3e7655",
+      "source": "039d78ae-e561-4444-9f64-34a6cbc5282c",
+      "target": "1cb5724d-32e0-4809-a31a-81c28aefa89a",
+      "sourceHandle": "no-response-039d78ae-e561-4444-9f64-34a6cbc5282c",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-97876768-2746-457f-b2f9-113d1671052c",
+      "source": "967e447f-88f1-4738-b448-ffc59fbe8cb0",
+      "target": "1cb5724d-32e0-4809-a31a-81c28aefa89a",
+      "sourceHandle": "success-967e447f-88f1-4738-b448-ffc59fbe8cb0",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-5dd015f8-7b18-4ced-80f3-9dc14d174f89",
+      "source": "967e447f-88f1-4738-b448-ffc59fbe8cb0",
+      "target": "a29b974c-9d0a-4815-933c-04d248117fbe",
+      "sourceHandle": "http-error-967e447f-88f1-4738-b448-ffc59fbe8cb0",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-8e2b348c-4e6c-41d3-b24d-4af771fa5b15",
+      "source": "967e447f-88f1-4738-b448-ffc59fbe8cb0",
+      "target": "a29b974c-9d0a-4815-933c-04d248117fbe",
+      "sourceHandle": "request-failed-967e447f-88f1-4738-b448-ffc59fbe8cb0",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-33a3ba22-1399-4608-9718-92cdef5e802b",
+      "source": "75912ca1-755f-47ef-bba1-1ee8956f53f4",
+      "target": "1cb5724d-32e0-4809-a31a-81c28aefa89a",
+      "sourceHandle": "next-step-75912ca1-755f-47ef-bba1-1ee8956f53f4",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-6dbb3ca8-384d-40c1-aaf6-9844a4f3fbc6",
+      "source": "a29b974c-9d0a-4815-933c-04d248117fbe",
+      "target": "1cb5724d-32e0-4809-a31a-81c28aefa89a",
+      "sourceHandle": "next-step-a29b974c-9d0a-4815-933c-04d248117fbe",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    }
+  ]
+}
