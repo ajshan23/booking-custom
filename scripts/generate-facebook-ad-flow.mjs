@@ -234,15 +234,19 @@ const slotList = node('listMessageNode', 'Pick a time', {
   to: TO, message_type: 'interactive', options_mode: 'dynamic',
   dynamic_options: { source: ref(page, 'data.data.slots'), id: '{{item.id}}', title: '{{item.title}}', description: '{{item.description}}', section_title: 'Available times', limit: 10 },
   meta_payload: { type: 'list', body: { text: '{{bk_t_slots}}' }, action: { button: '{{bk_t_list_button}}' } },
-  form_payload: { to: TO, header_type: 'none', body: '{{bk_t_slots}}', footer: '', list_title: '{{bk_t_list_button}}', options_mode: 'dynamic', ...wait }
+  // Format check with one allowed wrong reply: typed text (lists only take taps) ends the
+  // wait at once with response_validation.outcome "max_invalid_replies" on No response.
+  form_payload: { to: TO, header_type: 'none', body: '{{bk_t_slots}}', footer: '', list_title: '{{bk_t_list_button}}', options_mode: 'dynamic', ...wait,
+    is_check_format: true, format_unit: 'list_reply', invalid_response_retry_limit: 1, invalid_response_text: '{{bk_t_change}}' }
 }); edge(page, slotList);
-const slotTimeout = save('Time reply timed out', { halted: 'exit' }); edge(slotList, slotTimeout, 'no-response'); edge(slotTimeout, bookingEnd);
+const typed = split('Customer typed instead of tapping', `${alias(slotList)}.response_validation.outcome === "max_invalid_replies"`); edge(slotList, typed, 'no-response');
+const slotTimeout = save('Time reply timed out', { halted: 'exit' }); edge(typed, slotTimeout, 'no'); edge(slotTimeout, bookingEnd);
 const slotFailed = save('Times could not be shown', { halted: 'human' }); edge(slotList, slotFailed, 'empty'); edge(slotList, slotFailed, 'invalid'); edge(slotFailed, bookingEnd);
 const more = split('Customer chose More times', `${alias(slotList)}.response.id === "__next__"`); edge(slotList, more, 'selected');
 const nextPage = save('Next page of times', { slot_page: '{{slot_page + 1}}' }); edge(more, nextPage, 'yes'); edge(nextPage, bookingEnd);
 // Lists ignore typed text, so "Another day" is a row the customer can tap.
 const otherDay = split('Customer chose Another day', `${alias(slotList)}.response.id === "__date__"`); edge(more, otherDay, 'no');
-const toDate = save('Ask for another day', { booking_stage: 'date', slot_page: 0, date_prompt: '{{bk_t_change}}' }); edge(otherDay, toDate, 'yes'); edge(toDate, bookingEnd);
+const toDate = save('Ask for another day', { booking_stage: 'date', slot_page: 0, date_prompt: '{{bk_t_change}}' }); edge(otherDay, toDate, 'yes'); edge(typed, toDate, 'yes'); edge(toDate, bookingEnd);
 const select = api('Hold the chosen time', `/v1/sessions/${sessionId}/select`, { selection: ref(slotList, 'response.id') }); edge(otherDay, select, 'no');
 const selectedOK = split('Time ready to confirm', `${alias(select)}.ok && ${alias(select)}.data.status === "awaiting_confirmation"`); edge(select, selectedOK);
 const reselect = save('Time expired: choose again', { booking_stage: 'date', date_prompt: '{{bk_t_change}}' }); edge(selectedOK, reselect, 'no'); edge(reselect, bookingEnd);
