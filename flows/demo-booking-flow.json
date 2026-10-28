@@ -1,0 +1,3149 @@
+{
+  "_nodes": [
+    {
+      "id": "e8db760c-f51e-4ec5-a337-4746f3de116f",
+      "type": "triggerNode",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "title": "triggerNode_1",
+        "displayName": "Demo booking requested",
+        "description": "",
+        "trigger": "custom_integration",
+        "topic": "custom:REPLACE_WITH_INTEGRATION:demo.booking",
+        "trigger_topic_title": "demo.booking",
+        "trigger_topic_description": "Sent by the ad flow when a customer taps Book demo"
+      }
+    },
+    {
+      "id": "868d54d1-8149-4414-a156-6bc2def604ed",
+      "type": "endFlowNode",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "data": {
+        "title": "endFlowNode_1",
+        "displayName": "End",
+        "description": ""
+      }
+    },
+    {
+      "id": "7998ca04-2e9e-40a6-a473-ab42161aa9a5",
+      "type": "conditionBranchNode",
+      "position": {
+        "x": 680,
+        "y": 0
+      },
+      "data": {
+        "title": "conditionBranchNode_1",
+        "displayName": "Customer language",
+        "description": "",
+        "paths": [
+          {
+            "label": "Italian",
+            "filterGroupCondition": "AND",
+            "filters": [
+              {
+                "id": "181f9fbb-abd6-4ac9-853a-573789c8f167",
+                "method": "OR",
+                "filters": [
+                  {
+                    "id": "8f458cc1-0d1c-4620-9391-a5be23ef4073",
+                    "type": "{{tg.lang}}",
+                    "condition": "text_equals_to_case_insensitive",
+                    "value": "it",
+                    "variable_type": "string"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "Spanish",
+            "filterGroupCondition": "AND",
+            "filters": [
+              {
+                "id": "b0f6acbb-5179-402d-a9da-cba90090399b",
+                "method": "OR",
+                "filters": [
+                  {
+                    "id": "f08af9a4-be3a-4186-a17c-290e2fac7680",
+                    "type": "{{tg.lang}}",
+                    "condition": "text_equals_to_case_insensitive",
+                    "value": "es",
+                    "variable_type": "string"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "English",
+            "filterGroupCondition": "AND",
+            "filters": [
+              {
+                "id": "24de8ffc-8f0d-409c-9725-fb58b6b4da3a",
+                "method": "OR",
+                "filters": [
+                  {
+                    "id": "5b942b56-5795-4090-a8bd-673fa290af8e",
+                    "type": "{{tg.lang}}",
+                    "condition": "text_not_equal_to_case_insensitive",
+                    "value": "xx",
+                    "variable_type": "string"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "0bfbb55a-ca4a-4d7d-b33d-218a58464c3d",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1020,
+        "y": 0
+      },
+      "data": {
+        "title": "saveVariableNode_1",
+        "displayName": "Booking setup",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "calendar_key",
+            "value": "REPLACE_WITH_SERVICE_API_KEY"
+          },
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "slot_page",
+            "value": 0
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": ""
+          },
+          {
+            "variable_name": "halted",
+            "value": false
+          },
+          {
+            "variable_name": "attempt_status",
+            "value": ""
+          },
+          {
+            "variable_name": "email_ok",
+            "value": false
+          },
+          {
+            "variable_name": "email_prompt",
+            "value": "{{bk_t_email}}"
+          },
+          {
+            "variable_name": "bk_slot",
+            "value": ""
+          },
+          {
+            "variable_name": "bk_meet",
+            "value": ""
+          },
+          {
+            "variable_name": "bk_email",
+            "value": ""
+          },
+          {
+            "variable_name": "booking_id",
+            "value": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "0d316eda-4263-4c1d-8efc-c65fd9f27cd8",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1360,
+        "y": 0
+      },
+      "data": {
+        "title": "saveVariableNode_2",
+        "displayName": "Texts (it)",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "bk_t_email",
+            "value": "Perfetto! 🙌 A quale email inviamo l'invito Google Meet?"
+          },
+          {
+            "variable_name": "bk_t_email_retry",
+            "value": "L'email non sembra corretta. Scrivi un indirizzo valido, ad es. nome@azienda.com"
+          },
+          {
+            "variable_name": "bk_t_date",
+            "value": "📅 Quale giorno va bene per la demo di 15 minuti?\n\nPuoi scrivere ad esempio *domani*, *lunedì dopo le 15* o *la prossima settimana*. Orari mostrati in"
+          },
+          {
+            "variable_name": "bk_t_slots",
+            "value": "Ecco gli orari liberi 👇 Tocca *Orari* per sceglierne uno."
+          },
+          {
+            "variable_name": "bk_t_list_button",
+            "value": "Orari"
+          },
+          {
+            "variable_name": "bk_t_confirm",
+            "value": "Conferma la tua demo:"
+          },
+          {
+            "variable_name": "bk_t_change",
+            "value": "Nessun problema. Quale altro giorno ti va bene?"
+          },
+          {
+            "variable_name": "bk_t_handoff",
+            "value": "Non sono riuscito a completare la prenotazione in automatico: il nostro team ti aiuterà qui in chat. 🙏"
+          },
+          {
+            "variable_name": "bk_t_exit",
+            "value": "Nessun problema. Se vuoi prenotare più avanti, scrivici qui. Grazie!"
+          },
+          {
+            "variable_name": "bk_t_btn_1",
+            "value": "Conferma"
+          },
+          {
+            "variable_name": "bk_t_btn_2",
+            "value": "Cambia orario"
+          },
+          {
+            "variable_name": "bk_t_btn_3",
+            "value": "Parla col team"
+          },
+          {
+            "variable_name": "bk_t_done_1",
+            "value": "🎉 La tua demo FlowFlex è confermata!"
+          },
+          {
+            "variable_name": "bk_t_done_2",
+            "value": "Riceverai anche l'invito di Google Calendar su"
+          },
+          {
+            "variable_name": "bk_t_done_3",
+            "value": "Grazie per il tuo interesse in FlowFlex! 😊"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a4a6ae54-d89d-483a-8d91-f809c8913511",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 0,
+        "y": 230
+      },
+      "data": {
+        "title": "saveVariableNode_3",
+        "displayName": "Texts (es)",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "bk_t_email",
+            "value": "¡Genial! 🙌 ¿A qué email enviamos la invitación de Google Meet?"
+          },
+          {
+            "variable_name": "bk_t_email_retry",
+            "value": "Ese email no parece correcto. Escribe una dirección válida, p. ej. nombre@empresa.com"
+          },
+          {
+            "variable_name": "bk_t_date",
+            "value": "📅 ¿Qué día te viene bien para la demo de 15 minutos?\n\nPuedes escribir por ejemplo *mañana*, *lunes después de las 15* o *la próxima semana*. Horarios en"
+          },
+          {
+            "variable_name": "bk_t_slots",
+            "value": "Estos son los horarios libres 👇 Toca *Horarios* para elegir uno."
+          },
+          {
+            "variable_name": "bk_t_list_button",
+            "value": "Horarios"
+          },
+          {
+            "variable_name": "bk_t_confirm",
+            "value": "Confirma tu demo:"
+          },
+          {
+            "variable_name": "bk_t_change",
+            "value": "Sin problema. ¿Qué otro día te viene bien?"
+          },
+          {
+            "variable_name": "bk_t_handoff",
+            "value": "No pude completar la reserva automáticamente; nuestro equipo te ayudará aquí en el chat. 🙏"
+          },
+          {
+            "variable_name": "bk_t_exit",
+            "value": "Sin problema. Si quieres reservar más adelante, escríbenos aquí. ¡Gracias!"
+          },
+          {
+            "variable_name": "bk_t_btn_1",
+            "value": "Confirmar"
+          },
+          {
+            "variable_name": "bk_t_btn_2",
+            "value": "Cambiar hora"
+          },
+          {
+            "variable_name": "bk_t_btn_3",
+            "value": "Hablar con equipo"
+          },
+          {
+            "variable_name": "bk_t_done_1",
+            "value": "🎉 ¡Tu demo de FlowFlex está confirmada!"
+          },
+          {
+            "variable_name": "bk_t_done_2",
+            "value": "También recibirás la invitación de Google Calendar en"
+          },
+          {
+            "variable_name": "bk_t_done_3",
+            "value": "¡Gracias por tu interés en FlowFlex! 😊"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3a0d7f37-b60e-46b4-ac11-6d52bc502acb",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 340,
+        "y": 230
+      },
+      "data": {
+        "title": "saveVariableNode_4",
+        "displayName": "Texts (en)",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "bk_t_email",
+            "value": "Great! 🙌 What email should we send the Google Meet invite to?"
+          },
+          {
+            "variable_name": "bk_t_email_retry",
+            "value": "That email doesn't look right. Please type a valid address, e.g. name@company.com"
+          },
+          {
+            "variable_name": "bk_t_date",
+            "value": "📅 Which day works for your 15-minute demo?\n\nYou can write things like *tomorrow*, *Monday after 3 pm* or *next week*. Times are shown in"
+          },
+          {
+            "variable_name": "bk_t_slots",
+            "value": "Here are the free times 👇 Tap *Times* to pick one."
+          },
+          {
+            "variable_name": "bk_t_list_button",
+            "value": "Times"
+          },
+          {
+            "variable_name": "bk_t_confirm",
+            "value": "Please confirm your demo:"
+          },
+          {
+            "variable_name": "bk_t_change",
+            "value": "No problem. Which other day works for you?"
+          },
+          {
+            "variable_name": "bk_t_handoff",
+            "value": "I couldn't finish the booking automatically, so our team will help you right here in this chat. 🙏"
+          },
+          {
+            "variable_name": "bk_t_exit",
+            "value": "No problem. If you'd like to book later, just message us here. Thank you!"
+          },
+          {
+            "variable_name": "bk_t_btn_1",
+            "value": "Confirm"
+          },
+          {
+            "variable_name": "bk_t_btn_2",
+            "value": "Change time"
+          },
+          {
+            "variable_name": "bk_t_btn_3",
+            "value": "Talk to team"
+          },
+          {
+            "variable_name": "bk_t_done_1",
+            "value": "🎉 Your FlowFlex demo call has been confirmed!"
+          },
+          {
+            "variable_name": "bk_t_done_2",
+            "value": "A Google Calendar invite is on its way to"
+          },
+          {
+            "variable_name": "bk_t_done_3",
+            "value": "Thank you for your interest in FlowFlex!😊"
+          }
+        ]
+      }
+    },
+    {
+      "id": "db1056c2-a362-4727-bb04-9a5c3c33b0fa",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 680,
+        "y": 230
+      },
+      "data": {
+        "title": "whatsappTextNode_1",
+        "displayName": "Hand over to the team",
+        "description": "",
+        "to": "{{tg.customer_phone}}",
+        "message_type": "text",
+        "invalid_response_text": "Please provide a valid response",
+        "meta_payload": {
+          "body": "{{bk_t_handoff}}"
+        },
+        "form_payload": {
+          "to": "{{tg.customer_phone}}",
+          "body": "{{bk_t_handoff}}",
+          "is_response_wait": false,
+          "is_check_format": false,
+          "format_unit": "text",
+          "response_wait": "1",
+          "response_wait_unit": "minutes"
+        }
+      }
+    },
+    {
+      "id": "e2974a1c-b572-4286-88dc-5bcb577841a8",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 1020,
+        "y": 230
+      },
+      "data": {
+        "title": "whatsappTextNode_2",
+        "displayName": "Customer left the booking",
+        "description": "",
+        "to": "{{tg.customer_phone}}",
+        "message_type": "text",
+        "invalid_response_text": "Please provide a valid response",
+        "meta_payload": {
+          "body": "{{bk_t_exit}}"
+        },
+        "form_payload": {
+          "to": "{{tg.customer_phone}}",
+          "body": "{{bk_t_exit}}",
+          "is_response_wait": false,
+          "is_check_format": false,
+          "format_unit": "text",
+          "response_wait": "1",
+          "response_wait_unit": "minutes"
+        }
+      }
+    },
+    {
+      "id": "85e95bb3-3b28-4f1b-87c5-dad78537b1f1",
+      "type": "repeatUntilNode",
+      "position": {
+        "x": 1360,
+        "y": 230
+      },
+      "data": {
+        "title": "repeatUntilNode_1",
+        "displayName": "Ask for an email: up to three tries",
+        "description": "",
+        "max_iterations": 3,
+        "conditions": [
+          {
+            "id": "1d6f5f45-c8b7-4a6d-9ecb-f3537b47f8ed",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "3a2af63b-ad60-415c-851f-ee67e896f8b4",
+                "type": "{{!!halted || email_ok === true}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "3bf19375-aa26-4019-8e68-e7d88e357953",
+      "type": "endLoopNode",
+      "position": {
+        "x": 0,
+        "y": 460
+      },
+      "data": {
+        "title": "endLoopNode_1",
+        "displayName": "End email tries",
+        "description": ""
+      }
+    },
+    {
+      "id": "f1747509-34ac-4137-b6e8-8748eb83d9ca",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 340,
+        "y": 460
+      },
+      "data": {
+        "title": "whatsappTextNode_3",
+        "displayName": "Ask for invite email",
+        "description": "",
+        "to": "{{tg.customer_phone}}",
+        "message_type": "text",
+        "invalid_response_text": "Please provide a valid response",
+        "meta_payload": {
+          "body": "{{email_prompt}}"
+        },
+        "form_payload": {
+          "to": "{{tg.customer_phone}}",
+          "body": "{{email_prompt}}",
+          "is_response_wait": true,
+          "response_wait": "30",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text",
+          "is_response_valid": false,
+          "invalid_message": ""
+        }
+      }
+    },
+    {
+      "id": "eac4651b-e18e-4cb6-85b9-62f24b818d21",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 680,
+        "y": 460
+      },
+      "data": {
+        "title": "saveVariableNode_5",
+        "displayName": "Email reply timed out",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "exit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "5a555247-be0f-426f-b439-a310bc869bf6",
+      "type": "apiNode",
+      "position": {
+        "x": 1020,
+        "y": 460
+      },
+      "data": {
+        "title": "apiNode_1",
+        "displayName": "Create booking session",
+        "description": "",
+        "request_version": 2,
+        "method": "POST",
+        "api_type": "custom",
+        "body_mode": "json",
+        "timeout_ms": 30000,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "url": "https://booking.flowflex.ai/v1/sessions",
+        "parameters": [],
+        "body": {
+          "customerRef": "{{tg.customer_phone}}",
+          "name": "{{trigger.customer_name || \"WhatsApp customer\"}}",
+          "email": "{{wtn_3.response.message}}",
+          "meetingType": "onboarding"
+        },
+        "content_type": "application/json",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{calendar_key}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4e995143-a29d-4fe5-9629-b043d02b8962",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 1360,
+        "y": 460
+      },
+      "data": {
+        "title": "conditionSplitNode_1",
+        "displayName": "Session created",
+        "description": "",
+        "conditions": [
+          {
+            "id": "75382c1a-7700-4508-9288-4c676990ba0a",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "7cc6ce77-8397-4def-a31c-eb9b75239ca5",
+                "type": "{{an_1.ok && !!an_1.data.sessionId}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "a1abc4ff-78b7-4a85-9e72-c4bac4b2ecfd",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 0,
+        "y": 690
+      },
+      "data": {
+        "title": "saveVariableNode_6",
+        "displayName": "Remember session",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "email_ok",
+            "value": true
+          },
+          {
+            "variable_name": "bk_email",
+            "value": "{{an_1.data.data.email}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ac03fb6f-d6b0-4746-abee-f72b813e0277",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 340,
+        "y": 690
+      },
+      "data": {
+        "title": "saveVariableNode_7",
+        "displayName": "Email invalid or service error",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "email_prompt",
+            "value": "{{bk_t_email_retry}}"
+          },
+          {
+            "variable_name": "halted",
+            "value": "{{an_1.status === 422 ? false : \"human\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "f929b81a-c5ca-4f64-9d7c-7459f1674d04",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 680,
+        "y": 690
+      },
+      "data": {
+        "title": "conditionSplitNode_2",
+        "displayName": "Continue with a valid email",
+        "description": "",
+        "conditions": [
+          {
+            "id": "3ec04984-4ffa-4b44-8bc0-db815af53119",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "61c8b510-4e2b-492b-9788-359a87eef223",
+                "type": "{{email_ok === true && !halted}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "5995d5ee-33c4-49dc-b009-bfcc1f3e95cf",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 1020,
+        "y": 690
+      },
+      "data": {
+        "title": "conditionSplitNode_3",
+        "displayName": "Email step: customer went quiet",
+        "description": "",
+        "conditions": [
+          {
+            "id": "81d3e4b7-76af-4c0f-a927-1aef2b78f14f",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "616fc4b9-5bcd-4f8b-b8c7-7c9b206c8381",
+                "type": "{{halted === \"exit\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "9c7ac58f-c850-4f46-8714-be748d706570",
+      "type": "repeatUntilNode",
+      "position": {
+        "x": 1360,
+        "y": 690
+      },
+      "data": {
+        "title": "repeatUntilNode_2",
+        "displayName": "Booking conversation: up to ten steps",
+        "description": "",
+        "max_iterations": 10,
+        "conditions": [
+          {
+            "id": "9dc4a53c-f3f0-4ac2-8577-99f7c53b8d87",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "505d86fc-1f5d-490b-ac75-6b155c96f09e",
+                "type": "{{!!halted || attempt_status === \"confirmed\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "type": "endLoopNode",
+      "position": {
+        "x": 0,
+        "y": 920
+      },
+      "data": {
+        "title": "endLoopNode_2",
+        "displayName": "End booking step",
+        "description": ""
+      }
+    },
+    {
+      "id": "67427ade-5967-419f-8afa-2844c35ed0c9",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 340,
+        "y": 920
+      },
+      "data": {
+        "title": "conditionSplitNode_4",
+        "displayName": "Step: choose a day",
+        "description": "",
+        "conditions": [
+          {
+            "id": "82750f5e-619c-4f9c-9d71-95d0132991f7",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "9bcf3a9b-5733-4f03-a2d6-76dd10023bca",
+                "type": "{{booking_stage === \"date\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "5f98960b-fadc-4feb-a54c-a25696acb7b4",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 680,
+        "y": 920
+      },
+      "data": {
+        "title": "whatsappTextNode_4",
+        "displayName": "Ask which day",
+        "description": "",
+        "to": "{{tg.customer_phone}}",
+        "message_type": "text",
+        "invalid_response_text": "Please provide a valid response",
+        "meta_payload": {
+          "body": "{{date_prompt || (bk_t_date + \" \" + an_1.data.data.timezone + \".\")}}"
+        },
+        "form_payload": {
+          "to": "{{tg.customer_phone}}",
+          "body": "{{date_prompt || (bk_t_date + \" \" + an_1.data.data.timezone + \".\")}}",
+          "is_response_wait": true,
+          "response_wait": "30",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text",
+          "is_response_valid": false,
+          "invalid_message": ""
+        }
+      }
+    },
+    {
+      "id": "1dcb92f9-498a-4764-9259-efaec77759f7",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1020,
+        "y": 920
+      },
+      "data": {
+        "title": "saveVariableNode_8",
+        "displayName": "Day reply timed out",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "exit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ace9b9bc-5630-4e3f-8202-178d7cc9d3a3",
+      "type": "apiNode",
+      "position": {
+        "x": 1360,
+        "y": 920
+      },
+      "data": {
+        "title": "apiNode_2",
+        "displayName": "Understand the day",
+        "description": "",
+        "request_version": 2,
+        "method": "POST",
+        "api_type": "custom",
+        "body_mode": "json",
+        "timeout_ms": 30000,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "url": "https://booking.flowflex.ai/v1/sessions/{{an_1.data.sessionId}}/interpret",
+        "parameters": [],
+        "body": {
+          "text": "{{wtn_4.response.message}}"
+        },
+        "content_type": "application/json",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{calendar_key}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "239ab110-e7c9-471f-8c67-d0031d017107",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 0,
+        "y": 1150
+      },
+      "data": {
+        "title": "conditionSplitNode_5",
+        "displayName": "Day understood",
+        "description": "",
+        "conditions": [
+          {
+            "id": "df414ace-1a4e-41bc-b252-e36121c2f3f8",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "79c61b02-26b7-4ea1-8090-3e85c963b833",
+                "type": "{{an_2.ok && an_2.data.status === \"resolved\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "e72d4eb4-64a1-4cb3-b860-555516cc1823",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 340,
+        "y": 1150
+      },
+      "data": {
+        "title": "conditionSplitNode_6",
+        "displayName": "Date service failed",
+        "description": "",
+        "conditions": [
+          {
+            "id": "a8a5a3ab-7bae-4027-88b6-f4dcb6bb669f",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "46ba07b5-267b-46cd-a37c-a06d5b340a24",
+                "type": "{{!an_2.ok && an_2.status !== 422}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "eb98b8a6-f09d-44e8-8376-e77eb1b88524",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 680,
+        "y": 1150
+      },
+      "data": {
+        "title": "saveVariableNode_9",
+        "displayName": "Date service failed: hand over",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7aaa7841-08fa-47fe-8153-4d7ef935e1cb",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1020,
+        "y": 1150
+      },
+      "data": {
+        "title": "saveVariableNode_10",
+        "displayName": "Ask again with the clarifying question",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": "{{an_2.data.message}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "89500788-da21-4d2f-9d47-4721d4ea70ce",
+      "type": "apiNode",
+      "position": {
+        "x": 1360,
+        "y": 1150
+      },
+      "data": {
+        "title": "apiNode_3",
+        "displayName": "Find free times",
+        "description": "",
+        "request_version": 2,
+        "method": "POST",
+        "api_type": "custom",
+        "body_mode": "json",
+        "timeout_ms": 30000,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "url": "https://booking.flowflex.ai/v1/sessions/{{an_1.data.sessionId}}/availability",
+        "parameters": [],
+        "body": {
+          "page": 0
+        },
+        "content_type": "application/json",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{calendar_key}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b3107e6b-0f72-4aa5-8bb8-cba92518a64d",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 0,
+        "y": 1380
+      },
+      "data": {
+        "title": "conditionSplitNode_7",
+        "displayName": "Free times found",
+        "description": "",
+        "conditions": [
+          {
+            "id": "b6b12f51-1f0d-4840-9ab9-aa41eae42f96",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "fbfa7ae5-f76e-47e2-b4a4-ead47cc80641",
+                "type": "{{an_3.ok && an_3.data.status === \"slots_available\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "afb7a07a-fe1a-4ad7-ad7a-9e6874d64d20",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 340,
+        "y": 1380
+      },
+      "data": {
+        "title": "saveVariableNode_11",
+        "displayName": "Show the times",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "slot"
+          },
+          {
+            "variable_name": "slot_page",
+            "value": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "2e3183d5-6a89-42e3-bd7a-24d233c7d861",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 680,
+        "y": 1380
+      },
+      "data": {
+        "title": "saveVariableNode_12",
+        "displayName": "No free times: ask for another day",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": "{{an_3.data.message || bk_t_change}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "396cde60-4a54-431a-9965-18e45a8e61ca",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 1020,
+        "y": 1380
+      },
+      "data": {
+        "title": "conditionSplitNode_8",
+        "displayName": "Step: choose a time",
+        "description": "",
+        "conditions": [
+          {
+            "id": "53beb4e8-a840-407f-b9ce-a5b42abcaaf7",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "c16c2d57-120d-4171-b881-682dc11cb5bb",
+                "type": "{{booking_stage === \"slot\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "dfb9c103-4b48-4b29-b4d1-b3c3af17920d",
+      "type": "apiNode",
+      "position": {
+        "x": 1360,
+        "y": 1380
+      },
+      "data": {
+        "title": "apiNode_4",
+        "displayName": "Load a page of times",
+        "description": "",
+        "request_version": 2,
+        "method": "POST",
+        "api_type": "custom",
+        "body_mode": "json",
+        "timeout_ms": 30000,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "url": "https://booking.flowflex.ai/v1/sessions/{{an_1.data.sessionId}}/availability",
+        "parameters": [],
+        "body": {
+          "page": "{{slot_page}}"
+        },
+        "content_type": "application/json",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{calendar_key}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "type": "listMessageNode",
+      "position": {
+        "x": 0,
+        "y": 1610
+      },
+      "data": {
+        "title": "listMessageNode_1",
+        "displayName": "Pick a time",
+        "description": "",
+        "to": "{{tg.customer_phone}}",
+        "message_type": "interactive",
+        "options_mode": "dynamic",
+        "dynamic_options": {
+          "source": "{{an_4.data.data.slots}}",
+          "id": "{{item.id}}",
+          "title": "{{item.title}}",
+          "description": "{{item.description}}",
+          "section_title": "Available times",
+          "limit": 10
+        },
+        "meta_payload": {
+          "type": "list",
+          "body": {
+            "text": "{{bk_t_slots}}"
+          },
+          "action": {
+            "button": "{{bk_t_list_button}}"
+          }
+        },
+        "form_payload": {
+          "to": "{{tg.customer_phone}}",
+          "header_type": "none",
+          "body": "{{bk_t_slots}}",
+          "footer": "",
+          "list_title": "{{bk_t_list_button}}",
+          "options_mode": "dynamic",
+          "is_response_wait": true,
+          "response_wait": "30",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text",
+          "is_response_valid": false,
+          "invalid_message": ""
+        }
+      }
+    },
+    {
+      "id": "c6c1a924-4edb-48c0-b347-78be788974cd",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 340,
+        "y": 1610
+      },
+      "data": {
+        "title": "saveVariableNode_13",
+        "displayName": "Time reply timed out",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "exit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "d23501cf-2e63-43e8-8398-c0f0f4c1939c",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 680,
+        "y": 1610
+      },
+      "data": {
+        "title": "saveVariableNode_14",
+        "displayName": "Times could not be shown",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bf24f930-578a-47c7-9e0d-3037a329dde7",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 1020,
+        "y": 1610
+      },
+      "data": {
+        "title": "conditionSplitNode_9",
+        "displayName": "Customer chose More times",
+        "description": "",
+        "conditions": [
+          {
+            "id": "fc6e59bb-83f0-4f76-b82c-a0a93385b369",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "6d411187-331a-43db-863b-86aff307d8b5",
+                "type": "{{lmn_1.response.id === \"__next__\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "9fe75ce6-3625-4223-bf26-49443c2ab2cf",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1360,
+        "y": 1610
+      },
+      "data": {
+        "title": "saveVariableNode_15",
+        "displayName": "Next page of times",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "slot_page",
+            "value": "{{slot_page + 1}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "56334c3f-6215-42e9-af5d-186b3831337b",
+      "type": "apiNode",
+      "position": {
+        "x": 0,
+        "y": 1840
+      },
+      "data": {
+        "title": "apiNode_5",
+        "displayName": "Hold the chosen time",
+        "description": "",
+        "request_version": 2,
+        "method": "POST",
+        "api_type": "custom",
+        "body_mode": "json",
+        "timeout_ms": 30000,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "url": "https://booking.flowflex.ai/v1/sessions/{{an_1.data.sessionId}}/select",
+        "parameters": [],
+        "body": {
+          "selection": "{{lmn_1.response.id}}"
+        },
+        "content_type": "application/json",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{calendar_key}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "9d587943-3e16-483c-9bd0-d8b810042b9d",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 340,
+        "y": 1840
+      },
+      "data": {
+        "title": "conditionSplitNode_10",
+        "displayName": "Time ready to confirm",
+        "description": "",
+        "conditions": [
+          {
+            "id": "a0eca468-5142-4265-8459-a41f91ebba42",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "6ac252b1-98cc-4263-92f5-b880261913e9",
+                "type": "{{an_5.ok && an_5.data.status === \"awaiting_confirmation\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "90597eb3-680c-4294-b97d-49695502f815",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 680,
+        "y": 1840
+      },
+      "data": {
+        "title": "saveVariableNode_16",
+        "displayName": "Time expired: choose again",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": "{{bk_t_change}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "19847b47-9e40-4e64-96e5-a799f6cd836e",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1020,
+        "y": 1840
+      },
+      "data": {
+        "title": "saveVariableNode_17",
+        "displayName": "Ask to confirm",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "confirm"
+          },
+          {
+            "variable_name": "confirmation_value",
+            "value": "{{an_5.data.data.confirmationToken}}"
+          },
+          {
+            "variable_name": "bk_slot",
+            "value": "{{an_5.data.message.split(\"\\n\")[1] || an_5.data.message}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "type": "buttonMessageNode",
+      "position": {
+        "x": 1360,
+        "y": 1840
+      },
+      "data": {
+        "title": "buttonMessageNode_1",
+        "displayName": "Confirm the demo",
+        "description": "",
+        "to": "{{tg.customer_phone}}",
+        "message_type": "interactive",
+        "meta_payload": {
+          "type": "button",
+          "body": {
+            "text": "{{bk_t_confirm}}\n\n🗓 {{bk_slot}}\n📧 {{bk_email}}"
+          },
+          "action": {
+            "buttons": [
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_1",
+                  "title": "{{bk_t_btn_1}}"
+                }
+              },
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_2",
+                  "title": "{{bk_t_btn_2}}"
+                }
+              },
+              {
+                "type": "reply",
+                "reply": {
+                  "id": "BUTTON_3",
+                  "title": "{{bk_t_btn_3}}"
+                }
+              }
+            ]
+          }
+        },
+        "form_payload": {
+          "to": "{{tg.customer_phone}}",
+          "header_type": "none",
+          "body": "{{bk_t_confirm}}\n\n🗓 {{bk_slot}}\n📧 {{bk_email}}",
+          "footer": "",
+          "buttons": [
+            {
+              "title": "{{bk_t_btn_1}}"
+            },
+            {
+              "title": "{{bk_t_btn_2}}"
+            },
+            {
+              "title": "{{bk_t_btn_3}}"
+            }
+          ],
+          "is_response_wait": true,
+          "response_wait": "30",
+          "response_wait_unit": "minutes",
+          "is_check_format": false,
+          "format_unit": "text",
+          "is_response_valid": false,
+          "invalid_message": ""
+        }
+      }
+    },
+    {
+      "id": "199c2d9d-a398-4e32-a25b-6951ee11cf2d",
+      "type": "apiNode",
+      "position": {
+        "x": 0,
+        "y": 2070
+      },
+      "data": {
+        "title": "apiNode_6",
+        "displayName": "Book the meeting (once)",
+        "description": "",
+        "request_version": 2,
+        "method": "POST",
+        "api_type": "custom",
+        "body_mode": "json",
+        "timeout_ms": 30000,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "url": "https://booking.flowflex.ai/v1/sessions/{{an_1.data.sessionId}}/book",
+        "parameters": [],
+        "body": {
+          "confirmed": true,
+          "confirmationToken": "{{confirmation_value}}"
+        },
+        "content_type": "application/json",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{calendar_key}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "inbound-{{confirmation_value}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a4d69c9a-89c0-448b-8fb4-284b512cb50b",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 340,
+        "y": 2070
+      },
+      "data": {
+        "title": "saveVariableNode_18",
+        "displayName": "Confirm reply timed out",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "exit"
+          }
+        ]
+      }
+    },
+    {
+      "id": "f71aab00-15f6-4764-9271-7e31e2d1f41b",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 680,
+        "y": 2070
+      },
+      "data": {
+        "title": "saveVariableNode_19",
+        "displayName": "Customer wants another time",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": "{{bk_t_change}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00224a09-ed20-4619-8eb8-c9fbefb7b4e7",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1020,
+        "y": 2070
+      },
+      "data": {
+        "title": "saveVariableNode_20",
+        "displayName": "Customer asked for the team",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          }
+        ]
+      }
+    },
+    {
+      "id": "d2659733-7547-427d-b68e-98f71567f384",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 1360,
+        "y": 2070
+      },
+      "data": {
+        "title": "conditionSplitNode_11",
+        "displayName": "Booked with a Meet link",
+        "description": "",
+        "conditions": [
+          {
+            "id": "ace0843e-0470-4201-aca9-02dd84317115",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "41703c42-bca4-4c9b-ab2c-16b9afff18f2",
+                "type": "{{an_6.data.status === \"confirmed\" && !!an_6.data.data.meetUrl}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "b0ee76dd-8d72-453d-8193-6376e29addcd",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 0,
+        "y": 2300
+      },
+      "data": {
+        "title": "saveVariableNode_21",
+        "displayName": "Remember the booking",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "attempt_status",
+            "value": "confirmed"
+          },
+          {
+            "variable_name": "bk_meet",
+            "value": "{{an_6.data.data.meetUrl}}"
+          },
+          {
+            "variable_name": "booking_id",
+            "value": "{{an_6.data.data.bookingId}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "66e99d3b-da3b-47a7-922f-0eef14d9c875",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 340,
+        "y": 2300
+      },
+      "data": {
+        "title": "conditionSplitNode_12",
+        "displayName": "Time was just taken",
+        "description": "",
+        "conditions": [
+          {
+            "id": "50c030cd-0d9a-4045-bde9-8ccb0ee9126f",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "fe5545c4-d7ab-4308-ac51-7d95434f361f",
+                "type": "{{[\"slot_unavailable\",\"slot_expired\"].includes(an_6.data.status) && an_6.data.data.canReselect === true}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "ea5a07c1-6ea9-4003-bac1-1802a0601001",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 680,
+        "y": 2300
+      },
+      "data": {
+        "title": "saveVariableNode_22",
+        "displayName": "Pick another time after a clash",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "booking_stage",
+            "value": "date"
+          },
+          {
+            "variable_name": "slot_page",
+            "value": 0
+          },
+          {
+            "variable_name": "date_prompt",
+            "value": "{{an_6.data.message}} {{bk_t_change}}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3ab4660e-e1bf-45ac-8733-e1e13510d56e",
+      "type": "saveVariableNode",
+      "position": {
+        "x": 1020,
+        "y": 2300
+      },
+      "data": {
+        "title": "saveVariableNode_23",
+        "displayName": "Booking needs the team",
+        "description": "",
+        "variables": [
+          {
+            "variable_name": "halted",
+            "value": "human"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3448fcbc-a3eb-43bd-856b-bb121d5799b2",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 1360,
+        "y": 2300
+      },
+      "data": {
+        "title": "conditionSplitNode_13",
+        "displayName": "Demo booked",
+        "description": "",
+        "conditions": [
+          {
+            "id": "96d6d8a9-e80e-4ef4-acc4-e3fba67233fa",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "5de4ece7-31bb-4b77-b7a7-f2360b058d74",
+                "type": "{{attempt_status === \"confirmed\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    },
+    {
+      "id": "b6d00299-8c58-4c90-98ba-dc4846849da8",
+      "type": "apiNode",
+      "position": {
+        "x": 0,
+        "y": 2530
+      },
+      "data": {
+        "title": "apiNode_7",
+        "displayName": "Inform Nafih (demo.booked)",
+        "description": "",
+        "request_version": 2,
+        "method": "POST",
+        "api_type": "custom",
+        "body_mode": "json",
+        "timeout_ms": 30000,
+        "on_http_error": "continue",
+        "on_transport_error": "continue",
+        "retry_policy": {
+          "enabled": false,
+          "max_retries": 2,
+          "total_timeout_ms": 180000,
+          "rate_limit": {
+            "backoff": "exponential",
+            "initial_delay_ms": 1000,
+            "max_delay_ms": 30000,
+            "enabled": false,
+            "delay_source": "header",
+            "retry_after_header": "Retry-After"
+          },
+          "http_failures": {
+            "backoff": "fixed",
+            "initial_delay_ms": 1000,
+            "max_delay_ms": 30000,
+            "enabled": false,
+            "status_codes": [
+              408,
+              500,
+              502,
+              503,
+              504
+            ],
+            "retry_network_errors": true
+          }
+        },
+        "url": "https://api.flowflex.ai/v1/events/ic_6c09546ffc023f5791640d96",
+        "headers": [
+          {
+            "key": "x-event",
+            "value": "demo.booked"
+          },
+          {
+            "key": "x-api-key",
+            "value": ""
+          },
+          {
+            "key": "x-api-secret",
+            "value": ""
+          }
+        ],
+        "parameters": [],
+        "body": {
+          "customername": "{{tg.customer_name}}",
+          "agent": "Nafih",
+          "customerphonenumber": "{{tg.customer_phone}}",
+          "agentphonenumber": "+917986100400",
+          "phone": "+917907768401",
+          "email": "ajmal@example.com",
+          "customer_email": "{{bk_email}}",
+          "meeting_time": "{{bk_slot}}",
+          "meet_link": "{{bk_meet}}",
+          "booking_id": "{{booking_id}}"
+        },
+        "content_type": "application/json",
+        "response_examples": [
+          {
+            "id": "example-saved",
+            "status": 200,
+            "body": {
+              "ok": true,
+              "id": "6712f0c4a1b2c3d4e5f60789",
+              "idempotent": false
+            }
+          },
+          {
+            "id": "example-400",
+            "status": 400,
+            "body": {
+              "error": "Missing x-event header"
+            }
+          },
+          {
+            "id": "example-500",
+            "status": 500,
+            "body": {
+              "error": "Internal auth error"
+            }
+          }
+        ],
+        "selected_response_example": "example-saved",
+        "sample_response": {
+          "status": 200,
+          "ok": true
+        }
+      }
+    },
+    {
+      "id": "78773195-6547-4620-a448-8729c96bae60",
+      "type": "whatsappTextNode",
+      "position": {
+        "x": 340,
+        "y": 2530
+      },
+      "data": {
+        "title": "whatsappTextNode_5",
+        "displayName": "Demo confirmed",
+        "description": "",
+        "to": "{{tg.customer_phone}}",
+        "message_type": "text",
+        "invalid_response_text": "Please provide a valid response",
+        "meta_payload": {
+          "body": "{{bk_t_done_1}}\n\n🗓 {{bk_slot}}\n🎥 Google Meet: {{bk_meet}}\n\n{{bk_t_done_2}} {{bk_email}}.\n\n{{bk_t_done_3}}"
+        },
+        "form_payload": {
+          "to": "{{tg.customer_phone}}",
+          "body": "{{bk_t_done_1}}\n\n🗓 {{bk_slot}}\n🎥 Google Meet: {{bk_meet}}\n\n{{bk_t_done_2}} {{bk_email}}.\n\n{{bk_t_done_3}}",
+          "is_response_wait": false,
+          "is_check_format": false,
+          "format_unit": "text",
+          "response_wait": "1",
+          "response_wait_unit": "minutes"
+        }
+      }
+    },
+    {
+      "id": "9ab4e2f1-fb25-45d9-a556-9e66e775e5e2",
+      "type": "conditionSplitNode",
+      "position": {
+        "x": 680,
+        "y": 2530
+      },
+      "data": {
+        "title": "conditionSplitNode_14",
+        "displayName": "Customer left or went quiet",
+        "description": "",
+        "conditions": [
+          {
+            "id": "97f8f205-7b8c-4b83-8ca0-5873a6f6b770",
+            "method": "AND",
+            "filters": [
+              {
+                "id": "30d3aa55-12d1-4154-82c0-d87b6b74913c",
+                "type": "{{halted === \"exit\"}}",
+                "value": true,
+                "condition": "boolean_is_true"
+              }
+            ]
+          }
+        ],
+        "filterGroupCondition": "AND"
+      }
+    }
+  ],
+  "_edges": [
+    {
+      "id": "flow-edge-7e5411bb-d86f-4362-b58e-9fbefc6f83fd",
+      "source": "e8db760c-f51e-4ec5-a337-4746f3de116f",
+      "target": "7998ca04-2e9e-40a6-a473-ab42161aa9a5",
+      "sourceHandle": "next-step-e8db760c-f51e-4ec5-a337-4746f3de116f",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-c3236abc-a3dd-4244-bdd9-50113851a6f3",
+      "source": "7998ca04-2e9e-40a6-a473-ab42161aa9a5",
+      "target": "0d316eda-4263-4c1d-8efc-c65fd9f27cd8",
+      "sourceHandle": "PATH_1-7998ca04-2e9e-40a6-a473-ab42161aa9a5",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-527bc485-d4d6-4240-9350-41016d80dfcb",
+      "source": "0d316eda-4263-4c1d-8efc-c65fd9f27cd8",
+      "target": "0bfbb55a-ca4a-4d7d-b33d-218a58464c3d",
+      "sourceHandle": "next-step-0d316eda-4263-4c1d-8efc-c65fd9f27cd8",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-7f96106d-aca2-4e78-8b4a-734347009a6e",
+      "source": "7998ca04-2e9e-40a6-a473-ab42161aa9a5",
+      "target": "a4a6ae54-d89d-483a-8d91-f809c8913511",
+      "sourceHandle": "PATH_2-7998ca04-2e9e-40a6-a473-ab42161aa9a5",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-2b2a4a10-7662-4a4d-a7a0-69cf467cbad0",
+      "source": "a4a6ae54-d89d-483a-8d91-f809c8913511",
+      "target": "0bfbb55a-ca4a-4d7d-b33d-218a58464c3d",
+      "sourceHandle": "next-step-a4a6ae54-d89d-483a-8d91-f809c8913511",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-7a169f75-a034-43a9-a448-bbe8f2bed9de",
+      "source": "7998ca04-2e9e-40a6-a473-ab42161aa9a5",
+      "target": "3a0d7f37-b60e-46b4-ac11-6d52bc502acb",
+      "sourceHandle": "PATH_3-7998ca04-2e9e-40a6-a473-ab42161aa9a5",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-8bc6fe35-7f82-4422-ba74-ff53dac5d1b1",
+      "source": "3a0d7f37-b60e-46b4-ac11-6d52bc502acb",
+      "target": "0bfbb55a-ca4a-4d7d-b33d-218a58464c3d",
+      "sourceHandle": "next-step-3a0d7f37-b60e-46b4-ac11-6d52bc502acb",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-5b0c3e1d-71a4-48c5-b441-4fbed7cd6358",
+      "source": "db1056c2-a362-4727-bb04-9a5c3c33b0fa",
+      "target": "868d54d1-8149-4414-a156-6bc2def604ed",
+      "sourceHandle": "next-step-db1056c2-a362-4727-bb04-9a5c3c33b0fa",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-74b58ba9-00b2-4e59-8eb1-014bafcef57e",
+      "source": "e2974a1c-b572-4286-88dc-5bcb577841a8",
+      "target": "868d54d1-8149-4414-a156-6bc2def604ed",
+      "sourceHandle": "next-step-e2974a1c-b572-4286-88dc-5bcb577841a8",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-9b75f89a-6f86-4259-9651-adbd9f2c3e5c",
+      "source": "0bfbb55a-ca4a-4d7d-b33d-218a58464c3d",
+      "target": "85e95bb3-3b28-4f1b-87c5-dad78537b1f1",
+      "sourceHandle": "next-step-0bfbb55a-ca4a-4d7d-b33d-218a58464c3d",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-76ec4cd9-6339-401c-a4ad-e239780d5888",
+      "source": "85e95bb3-3b28-4f1b-87c5-dad78537b1f1",
+      "target": "f1747509-34ac-4137-b6e8-8748eb83d9ca",
+      "sourceHandle": "next-step-85e95bb3-3b28-4f1b-87c5-dad78537b1f1",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-cd17be8e-3fbc-49cb-81c2-dc91d3c05b3f",
+      "source": "f1747509-34ac-4137-b6e8-8748eb83d9ca",
+      "target": "eac4651b-e18e-4cb6-85b9-62f24b818d21",
+      "sourceHandle": "no-response-f1747509-34ac-4137-b6e8-8748eb83d9ca",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-7b6259cf-6ec7-4b7f-9415-94bcbf9d5d11",
+      "source": "eac4651b-e18e-4cb6-85b9-62f24b818d21",
+      "target": "3bf19375-aa26-4019-8e68-e7d88e357953",
+      "sourceHandle": "next-step-eac4651b-e18e-4cb6-85b9-62f24b818d21",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-f122c6de-ac44-4730-81bc-4a01bcf12634",
+      "source": "f1747509-34ac-4137-b6e8-8748eb83d9ca",
+      "target": "5a555247-be0f-426f-b439-a310bc869bf6",
+      "sourceHandle": "next-step-f1747509-34ac-4137-b6e8-8748eb83d9ca",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-a6af98ba-2b74-42e6-a04a-8985e63f7b5e",
+      "source": "5a555247-be0f-426f-b439-a310bc869bf6",
+      "target": "4e995143-a29d-4fe5-9629-b043d02b8962",
+      "sourceHandle": "next-step-5a555247-be0f-426f-b439-a310bc869bf6",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-01d8abb8-a419-4ad3-882a-e7fc2add13eb",
+      "source": "4e995143-a29d-4fe5-9629-b043d02b8962",
+      "target": "a1abc4ff-78b7-4a85-9e72-c4bac4b2ecfd",
+      "sourceHandle": "yes-4e995143-a29d-4fe5-9629-b043d02b8962",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-a83ef373-1bee-4d13-b9c4-c0f888fbf328",
+      "source": "a1abc4ff-78b7-4a85-9e72-c4bac4b2ecfd",
+      "target": "3bf19375-aa26-4019-8e68-e7d88e357953",
+      "sourceHandle": "next-step-a1abc4ff-78b7-4a85-9e72-c4bac4b2ecfd",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-08b50c15-2a0a-456d-bcc0-d3fa224a94a3",
+      "source": "4e995143-a29d-4fe5-9629-b043d02b8962",
+      "target": "ac03fb6f-d6b0-4746-abee-f72b813e0277",
+      "sourceHandle": "no-4e995143-a29d-4fe5-9629-b043d02b8962",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-48bface5-5940-4216-898b-818b0d86ef54",
+      "source": "ac03fb6f-d6b0-4746-abee-f72b813e0277",
+      "target": "3bf19375-aa26-4019-8e68-e7d88e357953",
+      "sourceHandle": "next-step-ac03fb6f-d6b0-4746-abee-f72b813e0277",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-fdcc882e-2065-4196-9b54-e44f3274bd1e",
+      "source": "3bf19375-aa26-4019-8e68-e7d88e357953",
+      "target": "f929b81a-c5ca-4f64-9d7c-7459f1674d04",
+      "sourceHandle": "next-step-3bf19375-aa26-4019-8e68-e7d88e357953",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-c84b2e7e-c579-4032-bc3c-223fc23b95f1",
+      "source": "f929b81a-c5ca-4f64-9d7c-7459f1674d04",
+      "target": "5995d5ee-33c4-49dc-b009-bfcc1f3e95cf",
+      "sourceHandle": "no-f929b81a-c5ca-4f64-9d7c-7459f1674d04",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-aa6db3cc-b51b-4186-90db-d3f4237accc2",
+      "source": "5995d5ee-33c4-49dc-b009-bfcc1f3e95cf",
+      "target": "e2974a1c-b572-4286-88dc-5bcb577841a8",
+      "sourceHandle": "yes-5995d5ee-33c4-49dc-b009-bfcc1f3e95cf",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-d32dc920-3221-471d-9d9e-37ff824eb72f",
+      "source": "5995d5ee-33c4-49dc-b009-bfcc1f3e95cf",
+      "target": "db1056c2-a362-4727-bb04-9a5c3c33b0fa",
+      "sourceHandle": "no-5995d5ee-33c4-49dc-b009-bfcc1f3e95cf",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-85e8a557-6eef-4688-a20b-ae254aa4df89",
+      "source": "f929b81a-c5ca-4f64-9d7c-7459f1674d04",
+      "target": "9c7ac58f-c850-4f46-8714-be748d706570",
+      "sourceHandle": "yes-f929b81a-c5ca-4f64-9d7c-7459f1674d04",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-eff5c4df-4199-401d-babc-f7bdd8983af3",
+      "source": "9c7ac58f-c850-4f46-8714-be748d706570",
+      "target": "67427ade-5967-419f-8afa-2844c35ed0c9",
+      "sourceHandle": "next-step-9c7ac58f-c850-4f46-8714-be748d706570",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-4eb3c747-bb85-48ca-8176-54ac63236157",
+      "source": "67427ade-5967-419f-8afa-2844c35ed0c9",
+      "target": "5f98960b-fadc-4feb-a54c-a25696acb7b4",
+      "sourceHandle": "yes-67427ade-5967-419f-8afa-2844c35ed0c9",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-7026ac21-b3e6-4eac-b322-6e69bfe53fd4",
+      "source": "5f98960b-fadc-4feb-a54c-a25696acb7b4",
+      "target": "1dcb92f9-498a-4764-9259-efaec77759f7",
+      "sourceHandle": "no-response-5f98960b-fadc-4feb-a54c-a25696acb7b4",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-cdfa70b2-6837-4cb1-9f18-506d12455b62",
+      "source": "1dcb92f9-498a-4764-9259-efaec77759f7",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-1dcb92f9-498a-4764-9259-efaec77759f7",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-1358de83-4e2c-42a2-af23-35c65fdead08",
+      "source": "5f98960b-fadc-4feb-a54c-a25696acb7b4",
+      "target": "ace9b9bc-5630-4e3f-8202-178d7cc9d3a3",
+      "sourceHandle": "next-step-5f98960b-fadc-4feb-a54c-a25696acb7b4",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-0d58ab19-922e-4cde-b986-96bfffb5ed83",
+      "source": "ace9b9bc-5630-4e3f-8202-178d7cc9d3a3",
+      "target": "239ab110-e7c9-471f-8c67-d0031d017107",
+      "sourceHandle": "next-step-ace9b9bc-5630-4e3f-8202-178d7cc9d3a3",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-7402e61d-0a55-4024-a481-0bfc31a05dc7",
+      "source": "239ab110-e7c9-471f-8c67-d0031d017107",
+      "target": "e72d4eb4-64a1-4cb3-b860-555516cc1823",
+      "sourceHandle": "no-239ab110-e7c9-471f-8c67-d0031d017107",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-e26f0a4c-1fa3-4af2-a8a2-b61f4ee8c7d0",
+      "source": "e72d4eb4-64a1-4cb3-b860-555516cc1823",
+      "target": "eb98b8a6-f09d-44e8-8376-e77eb1b88524",
+      "sourceHandle": "yes-e72d4eb4-64a1-4cb3-b860-555516cc1823",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-d3c261be-43b7-4782-aa11-9a91ce22435f",
+      "source": "eb98b8a6-f09d-44e8-8376-e77eb1b88524",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-eb98b8a6-f09d-44e8-8376-e77eb1b88524",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-d599e246-318b-4d50-9a05-60df40ba624d",
+      "source": "e72d4eb4-64a1-4cb3-b860-555516cc1823",
+      "target": "7aaa7841-08fa-47fe-8153-4d7ef935e1cb",
+      "sourceHandle": "no-e72d4eb4-64a1-4cb3-b860-555516cc1823",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-94f61568-615c-4b02-952e-5363dbeb331a",
+      "source": "7aaa7841-08fa-47fe-8153-4d7ef935e1cb",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-7aaa7841-08fa-47fe-8153-4d7ef935e1cb",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-e229b9ae-cda5-4258-8424-13bb37f790ed",
+      "source": "239ab110-e7c9-471f-8c67-d0031d017107",
+      "target": "89500788-da21-4d2f-9d47-4721d4ea70ce",
+      "sourceHandle": "yes-239ab110-e7c9-471f-8c67-d0031d017107",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-f5d51985-d760-46ba-840e-a16e1d5f8a48",
+      "source": "89500788-da21-4d2f-9d47-4721d4ea70ce",
+      "target": "b3107e6b-0f72-4aa5-8bb8-cba92518a64d",
+      "sourceHandle": "next-step-89500788-da21-4d2f-9d47-4721d4ea70ce",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-7240e999-6f2d-49cf-a5b7-3a8bf068c716",
+      "source": "b3107e6b-0f72-4aa5-8bb8-cba92518a64d",
+      "target": "afb7a07a-fe1a-4ad7-ad7a-9e6874d64d20",
+      "sourceHandle": "yes-b3107e6b-0f72-4aa5-8bb8-cba92518a64d",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-67bb6e19-e1db-485c-8a49-5c0393d88013",
+      "source": "afb7a07a-fe1a-4ad7-ad7a-9e6874d64d20",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-afb7a07a-fe1a-4ad7-ad7a-9e6874d64d20",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-5fe3d723-5f55-45da-be8e-0eb703bfe978",
+      "source": "b3107e6b-0f72-4aa5-8bb8-cba92518a64d",
+      "target": "2e3183d5-6a89-42e3-bd7a-24d233c7d861",
+      "sourceHandle": "no-b3107e6b-0f72-4aa5-8bb8-cba92518a64d",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-bd44c343-b182-45e7-a21b-458b1e611ddf",
+      "source": "2e3183d5-6a89-42e3-bd7a-24d233c7d861",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-2e3183d5-6a89-42e3-bd7a-24d233c7d861",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-c2a83a91-f31c-4534-b706-f35fff270e7b",
+      "source": "67427ade-5967-419f-8afa-2844c35ed0c9",
+      "target": "396cde60-4a54-431a-9965-18e45a8e61ca",
+      "sourceHandle": "no-67427ade-5967-419f-8afa-2844c35ed0c9",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-0e9239d9-6e1e-4961-8e9f-bf3246b3cc59",
+      "source": "396cde60-4a54-431a-9965-18e45a8e61ca",
+      "target": "dfb9c103-4b48-4b29-b4d1-b3c3af17920d",
+      "sourceHandle": "yes-396cde60-4a54-431a-9965-18e45a8e61ca",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-3deac679-11d5-45ab-954b-c158636a7fdd",
+      "source": "dfb9c103-4b48-4b29-b4d1-b3c3af17920d",
+      "target": "3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "sourceHandle": "next-step-dfb9c103-4b48-4b29-b4d1-b3c3af17920d",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-5b708626-1ece-4951-8f0f-a92658a18977",
+      "source": "3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "target": "c6c1a924-4edb-48c0-b347-78be788974cd",
+      "sourceHandle": "no-response-3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-b8de4b72-54d2-471d-9e83-51bab795c589",
+      "source": "c6c1a924-4edb-48c0-b347-78be788974cd",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-c6c1a924-4edb-48c0-b347-78be788974cd",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-71f7d4df-92f4-4eb6-b688-8857d2f6c86b",
+      "source": "3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "target": "d23501cf-2e63-43e8-8398-c0f0f4c1939c",
+      "sourceHandle": "empty-3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-ab5f1f18-1129-41ea-8d6b-b1d897d8682a",
+      "source": "3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "target": "d23501cf-2e63-43e8-8398-c0f0f4c1939c",
+      "sourceHandle": "invalid-3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-84ef08c8-159c-4308-aee8-aed3c418dc40",
+      "source": "d23501cf-2e63-43e8-8398-c0f0f4c1939c",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-d23501cf-2e63-43e8-8398-c0f0f4c1939c",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-4a14eacd-f347-4159-8efe-0b95f1a3dcfb",
+      "source": "3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "target": "bf24f930-578a-47c7-9e0d-3037a329dde7",
+      "sourceHandle": "selected-3261e904-9cf6-4833-b1fc-953328f0ac68",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-f1a08075-53e1-4d0f-ba17-28757be41ac1",
+      "source": "bf24f930-578a-47c7-9e0d-3037a329dde7",
+      "target": "9fe75ce6-3625-4223-bf26-49443c2ab2cf",
+      "sourceHandle": "yes-bf24f930-578a-47c7-9e0d-3037a329dde7",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-715a3773-d23b-400f-adac-1f42567006c1",
+      "source": "9fe75ce6-3625-4223-bf26-49443c2ab2cf",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-9fe75ce6-3625-4223-bf26-49443c2ab2cf",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-418843d3-d0ef-4b29-a7f9-99c605e9e7ab",
+      "source": "bf24f930-578a-47c7-9e0d-3037a329dde7",
+      "target": "56334c3f-6215-42e9-af5d-186b3831337b",
+      "sourceHandle": "no-bf24f930-578a-47c7-9e0d-3037a329dde7",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-ac87d096-4412-446d-abfc-8f9a851a45ab",
+      "source": "56334c3f-6215-42e9-af5d-186b3831337b",
+      "target": "9d587943-3e16-483c-9bd0-d8b810042b9d",
+      "sourceHandle": "next-step-56334c3f-6215-42e9-af5d-186b3831337b",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-771740c0-f3fa-4036-83ba-5d952f18808d",
+      "source": "9d587943-3e16-483c-9bd0-d8b810042b9d",
+      "target": "90597eb3-680c-4294-b97d-49695502f815",
+      "sourceHandle": "no-9d587943-3e16-483c-9bd0-d8b810042b9d",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-f2a26280-e8f7-4187-831d-71bd23e19cd3",
+      "source": "90597eb3-680c-4294-b97d-49695502f815",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-90597eb3-680c-4294-b97d-49695502f815",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-0314475b-65e6-4cc5-b7db-5cc2b5fe3969",
+      "source": "9d587943-3e16-483c-9bd0-d8b810042b9d",
+      "target": "19847b47-9e40-4e64-96e5-a799f6cd836e",
+      "sourceHandle": "yes-9d587943-3e16-483c-9bd0-d8b810042b9d",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-8f2644c0-0b73-476f-8988-8f905a2b7ce0",
+      "source": "19847b47-9e40-4e64-96e5-a799f6cd836e",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-19847b47-9e40-4e64-96e5-a799f6cd836e",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-615fe8ec-0d59-4484-a6fe-c359cb26d620",
+      "source": "396cde60-4a54-431a-9965-18e45a8e61ca",
+      "target": "c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "sourceHandle": "no-396cde60-4a54-431a-9965-18e45a8e61ca",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-c2611d64-34f1-4b2e-a134-f7183932b11b",
+      "source": "a4d69c9a-89c0-448b-8fb4-284b512cb50b",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-a4d69c9a-89c0-448b-8fb4-284b512cb50b",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-914298c8-4007-40fd-96c2-8f411922c339",
+      "source": "f71aab00-15f6-4764-9271-7e31e2d1f41b",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-f71aab00-15f6-4764-9271-7e31e2d1f41b",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-e98e7a92-2d3b-4fbc-84bb-469addcb7712",
+      "source": "00224a09-ed20-4619-8eb8-c9fbefb7b4e7",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-00224a09-ed20-4619-8eb8-c9fbefb7b4e7",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-780d51cd-7efc-403c-b7f3-02f6718c723e",
+      "source": "c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "target": "199c2d9d-a398-4e32-a25b-6951ee11cf2d",
+      "sourceHandle": "BUTTON_1-c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-661e4418-c340-49da-82cc-25a592c2a629",
+      "source": "c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "target": "f71aab00-15f6-4764-9271-7e31e2d1f41b",
+      "sourceHandle": "BUTTON_2-c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-9344e8dc-6e1c-47d1-8c33-da6816097902",
+      "source": "c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "target": "00224a09-ed20-4619-8eb8-c9fbefb7b4e7",
+      "sourceHandle": "BUTTON_3-c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-7da5b32f-e627-4741-b768-c4262cb67bc0",
+      "source": "c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "target": "a4d69c9a-89c0-448b-8fb4-284b512cb50b",
+      "sourceHandle": "no-response-c8fef2ef-e956-4388-8cc0-ba105d7a02b8",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-cea38b2c-89df-4062-88dc-3322582d978c",
+      "source": "199c2d9d-a398-4e32-a25b-6951ee11cf2d",
+      "target": "d2659733-7547-427d-b68e-98f71567f384",
+      "sourceHandle": "next-step-199c2d9d-a398-4e32-a25b-6951ee11cf2d",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-a96e5a6c-6a48-44e1-ba61-7b66c329b8fb",
+      "source": "d2659733-7547-427d-b68e-98f71567f384",
+      "target": "b0ee76dd-8d72-453d-8193-6376e29addcd",
+      "sourceHandle": "yes-d2659733-7547-427d-b68e-98f71567f384",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-4465c65e-2edf-4618-beb4-d48db020f755",
+      "source": "b0ee76dd-8d72-453d-8193-6376e29addcd",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-b0ee76dd-8d72-453d-8193-6376e29addcd",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-603f206b-6280-4f79-85a4-ccc34e407701",
+      "source": "d2659733-7547-427d-b68e-98f71567f384",
+      "target": "66e99d3b-da3b-47a7-922f-0eef14d9c875",
+      "sourceHandle": "no-d2659733-7547-427d-b68e-98f71567f384",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-b3e1c04b-e48d-4c72-9c5a-457011678539",
+      "source": "66e99d3b-da3b-47a7-922f-0eef14d9c875",
+      "target": "ea5a07c1-6ea9-4003-bac1-1802a0601001",
+      "sourceHandle": "yes-66e99d3b-da3b-47a7-922f-0eef14d9c875",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-a1224ae2-dbf7-4d5e-ade9-75475643bb1a",
+      "source": "ea5a07c1-6ea9-4003-bac1-1802a0601001",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-ea5a07c1-6ea9-4003-bac1-1802a0601001",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-bf0342ce-a588-4ed7-9c6f-1406ed27bdf7",
+      "source": "66e99d3b-da3b-47a7-922f-0eef14d9c875",
+      "target": "3ab4660e-e1bf-45ac-8733-e1e13510d56e",
+      "sourceHandle": "no-66e99d3b-da3b-47a7-922f-0eef14d9c875",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-cdd7df12-0fb9-4bb4-bcaa-caf940d87eed",
+      "source": "3ab4660e-e1bf-45ac-8733-e1e13510d56e",
+      "target": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "sourceHandle": "next-step-3ab4660e-e1bf-45ac-8733-e1e13510d56e",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-bb260658-3d49-4bd3-8169-b1a406326d69",
+      "source": "71687e63-3cb8-49f9-837d-b81895d191db",
+      "target": "3448fcbc-a3eb-43bd-856b-bb121d5799b2",
+      "sourceHandle": "next-step-71687e63-3cb8-49f9-837d-b81895d191db",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-d704366e-91e6-4631-a11a-80c0d7976f05",
+      "source": "3448fcbc-a3eb-43bd-856b-bb121d5799b2",
+      "target": "b6d00299-8c58-4c90-98ba-dc4846849da8",
+      "sourceHandle": "yes-3448fcbc-a3eb-43bd-856b-bb121d5799b2",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-93c9ee42-e13f-41f8-b7fe-c98809129fb0",
+      "source": "b6d00299-8c58-4c90-98ba-dc4846849da8",
+      "target": "78773195-6547-4620-a448-8729c96bae60",
+      "sourceHandle": "next-step-b6d00299-8c58-4c90-98ba-dc4846849da8",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-6b417b57-a039-4087-b040-838d26d4e68a",
+      "source": "78773195-6547-4620-a448-8729c96bae60",
+      "target": "868d54d1-8149-4414-a156-6bc2def604ed",
+      "sourceHandle": "next-step-78773195-6547-4620-a448-8729c96bae60",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-b9092331-75fb-4309-b2db-23e22782f9a8",
+      "source": "3448fcbc-a3eb-43bd-856b-bb121d5799b2",
+      "target": "9ab4e2f1-fb25-45d9-a556-9e66e775e5e2",
+      "sourceHandle": "no-3448fcbc-a3eb-43bd-856b-bb121d5799b2",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-5a59c780-f273-41c7-98c6-dc5dd1720a55",
+      "source": "9ab4e2f1-fb25-45d9-a556-9e66e775e5e2",
+      "target": "e2974a1c-b572-4286-88dc-5bcb577841a8",
+      "sourceHandle": "yes-9ab4e2f1-fb25-45d9-a556-9e66e775e5e2",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    },
+    {
+      "id": "flow-edge-6de8f4b6-d749-4f0c-9e09-7bbadb38ab98",
+      "source": "9ab4e2f1-fb25-45d9-a556-9e66e775e5e2",
+      "target": "db1056c2-a362-4727-bb04-9a5c3c33b0fa",
+      "sourceHandle": "no-9ab4e2f1-fb25-45d9-a556-9e66e775e5e2",
+      "targetHandle": "target",
+      "type": "button",
+      "style": {
+        "stroke": "rgb(127, 86, 217)",
+        "strokeWidth": 2
+      },
+      "data": {
+        "readOnly": false,
+        "highlighted": false
+      }
+    }
+  ]
+}
