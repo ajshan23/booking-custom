@@ -462,12 +462,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to UAE numbers* — AED 0.17 per delivered message.\n- 100 customers × 1 message = *AED 17*\n- 1,000 customers × 1 message = *AED 170*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for UAE numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough."
           },
@@ -499,7 +493,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to UAE numbers* — AED 0.17 per delivered message.\n- 100 customers × 1 message = *AED 17*\n- 1,000 customers × 1 message = *AED 170*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for UAE numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough.",
           "footer": "",
           "buttons": [
@@ -514,20 +508,12 @@
             }
           ],
           "is_response_wait": false,
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          },
           "is_check_format": false,
           "format_unit": "text",
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "minutes",
-          "response_wait": "1",
-          "header_data": ""
+          "response_wait": "1"
         }
       },
       "width": 250,
@@ -1858,12 +1844,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Saudi Arabia numbers* — SAR 0.20 per delivered message.\n- 100 customers × 1 message = *SAR 20*\n- 1,000 customers × 1 message = *SAR 201*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Saudi Arabia numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough."
           },
@@ -1895,7 +1875,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Saudi Arabia numbers* — SAR 0.20 per delivered message.\n- 100 customers × 1 message = *SAR 20*\n- 1,000 customers × 1 message = *SAR 201*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Saudi Arabia numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough.",
           "footer": "",
           "buttons": [
@@ -1910,20 +1890,12 @@
             }
           ],
           "is_response_wait": false,
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          },
           "is_check_format": false,
           "format_unit": "text",
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "minutes",
-          "response_wait": "1",
-          "header_data": ""
+          "response_wait": "1"
         }
       },
       "width": 250,
@@ -1947,12 +1919,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Oman numbers* — OMR 0.0155 per delivered message.\n- 100 customers × 1 message = *OMR 1.55*\n- 1,000 customers × 1 message = *OMR 15.48*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Oman numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough."
           },
@@ -1984,7 +1950,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Oman numbers* — OMR 0.0155 per delivered message.\n- 100 customers × 1 message = *OMR 1.55*\n- 1,000 customers × 1 message = *OMR 15.48*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Oman numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough.",
           "footer": "",
           "buttons": [
@@ -1999,20 +1965,12 @@
             }
           ],
           "is_response_wait": false,
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          },
           "is_check_format": false,
           "format_unit": "text",
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "minutes",
-          "response_wait": "1",
-          "header_data": ""
+          "response_wait": "1"
         }
       },
       "width": 250,
@@ -2036,12 +1994,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Qatar numbers* — QAR 0.15 per delivered message.\n- 100 customers × 1 message = *QAR 15*\n- 1,000 customers × 1 message = *QAR 146*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Qatar numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough."
           },
@@ -2073,7 +2025,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Qatar numbers* — QAR 0.15 per delivered message.\n- 100 customers × 1 message = *QAR 15*\n- 1,000 customers × 1 message = *QAR 146*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Qatar numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough.",
           "footer": "",
           "buttons": [
@@ -2088,20 +2040,12 @@
             }
           ],
           "is_response_wait": false,
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          },
           "is_check_format": false,
           "format_unit": "text",
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "minutes",
-          "response_wait": "1",
-          "header_data": ""
+          "response_wait": "1"
         }
       },
       "width": 250,
@@ -2125,12 +2069,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to India numbers* — ₹0.86 per delivered message.\n- 100 customers × 1 message = *₹86*\n- 1,000 customers × 1 message = *₹863*\nPlus 18% GST on message charges.\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for India numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough."
           },
@@ -2162,7 +2100,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to India numbers* — ₹0.86 per delivered message.\n- 100 customers × 1 message = *₹86*\n- 1,000 customers × 1 message = *₹863*\nPlus 18% GST on message charges.\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for India numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough.",
           "footer": "",
           "buttons": [
@@ -2177,20 +2115,12 @@
             }
           ],
           "is_response_wait": false,
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          },
           "is_check_format": false,
           "format_unit": "text",
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "minutes",
-          "response_wait": "1",
-          "header_data": ""
+          "response_wait": "1"
         }
       },
       "width": 250,
@@ -2214,12 +2144,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Bahrain numbers* — BHD 0.0151 per delivered message.\n- 100 customers × 1 message = *BHD 1.51*\n- 1,000 customers × 1 message = *BHD 15.12*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Bahrain numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough."
           },
@@ -2251,7 +2175,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Bahrain numbers* — BHD 0.0151 per delivered message.\n- 100 customers × 1 message = *BHD 1.51*\n- 1,000 customers × 1 message = *BHD 15.12*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Bahrain numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough.",
           "footer": "",
           "buttons": [
@@ -2266,20 +2190,12 @@
             }
           ],
           "is_response_wait": false,
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          },
           "is_check_format": false,
           "format_unit": "text",
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "minutes",
-          "response_wait": "1",
-          "header_data": ""
+          "response_wait": "1"
         }
       },
       "width": 250,
@@ -2303,12 +2219,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Kuwait numbers* — KWD 0.0123 per delivered message.\n- 100 customers × 1 message = *KWD 1.23*\n- 1,000 customers × 1 message = *KWD 12.30*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Kuwait numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough."
           },
@@ -2340,7 +2250,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta marketing messages to Kuwait numbers* — KWD 0.0123 per delivered message.\n- 100 customers × 1 message = *KWD 1.23*\n- 1,000 customers × 1 message = *KWD 12.30*\n\n*These Meta costs are additional to your subscription and apply again for each paid campaign.* Rates effective 1 October 2026.\n\nFigures above are for Kuwait numbers. If your customers are in another country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book demo* for a 15-minute walkthrough.",
           "footer": "",
           "buttons": [
@@ -2355,20 +2265,12 @@
             }
           ],
           "is_response_wait": false,
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          },
           "is_check_format": false,
           "format_unit": "text",
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "minutes",
-          "response_wait": "1",
-          "header_data": ""
+          "response_wait": "1"
         }
       },
       "width": 250,
@@ -2525,12 +2427,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Ciao 👋 Benvenuto in *FlowFlex AI*!\n\n*Due costi: abbonamento FlowFlex + costi dei messaggi Meta.*\n\n① *Abbonamento FlowFlex* — broadcast, risposte automatiche e inbox condivisa per il team. \n\nIl piano Basic parte da *$23/mese, fatturati $276 all'anno*, \n\noppure *$29/mese, fatturati $87 a trimestre*, \n\noppure *$35/mese con fatturazione mensile*.\n\n② *Messaggi Meta verso numeri italiani* — per messaggio consegnato:\n- Marketing: *€0,06*\n- Utility: *€0,02*\n- Autenticazione: *€0,02*\n- Servizio: *€0,02*\n\nEsempio, messaggi marketing:\n- 100 clienti × 1 messaggio = *€6*\n- 1.000 clienti × 1 messaggio = *€60*\n\n*I costi Meta si aggiungono all'abbonamento e si applicano di nuovo a ogni campagna a pagamento.*\n\nLe cifre sopra si riferiscono a numeri italiani. Se i tuoi clienti sono in un altro paese, tocca *Domanda sui prezzi* e scegli *Tariffe altri paesi*.\n\nSe entrambi i costi ti vanno bene, tocca *Prenota demo* per una presentazione di 15 minuti."
           },
@@ -2562,7 +2458,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Ciao 👋 Benvenuto in *FlowFlex AI*!\n\n*Due costi: abbonamento FlowFlex + costi dei messaggi Meta.*\n\n① *Abbonamento FlowFlex* — broadcast, risposte automatiche e inbox condivisa per il team. \n\nIl piano Basic parte da *$23/mese, fatturati $276 all'anno*, \n\noppure *$29/mese, fatturati $87 a trimestre*, \n\noppure *$35/mese con fatturazione mensile*.\n\n② *Messaggi Meta verso numeri italiani* — per messaggio consegnato:\n- Marketing: *€0,06*\n- Utility: *€0,02*\n- Autenticazione: *€0,02*\n- Servizio: *€0,02*\n\nEsempio, messaggi marketing:\n- 100 clienti × 1 messaggio = *€6*\n- 1.000 clienti × 1 messaggio = *€60*\n\n*I costi Meta si aggiungono all'abbonamento e si applicano di nuovo a ogni campagna a pagamento.*\n\nLe cifre sopra si riferiscono a numeri italiani. Se i tuoi clienti sono in un altro paese, tocca *Domanda sui prezzi* e scegli *Tariffe altri paesi*.\n\nSe entrambi i costi ti vanno bene, tocca *Prenota demo* per una presentazione di 15 minuti.",
           "footer": "",
           "buttons": [
@@ -2577,20 +2473,12 @@
             }
           ],
           "is_response_wait": true,
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          },
           "response_wait_unit": "hours",
           "response_wait": 3,
           "is_check_format": false,
           "format_unit": "text",
           "is_response_valid": false,
-          "invalid_message": "",
-          "header_data": ""
+          "invalid_message": ""
         }
       },
       "width": 250,
@@ -4146,12 +4034,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hola 👋 ¡Bienvenido a *FlowFlex AI*!\n\n*Dos costes: suscripción a FlowFlex + cargos de mensajes de Meta.*\n\n① *Suscripción a FlowFlex* — difusiones, respuestas automáticas y bandeja de entrada compartida para tu equipo.\n\nEl plan Basic empieza en *$23/mes, facturados $276 al año*, o *$29/mes, facturados $87 al trimestre*, o *$35/mes con facturación mensual*.\n\n② *Mensajes de Meta a números españoles* — por mensaje entregado:\n- Marketing: *€0,05*\n- Utilidad: *€0,015*\n- Autenticación: *€0,015*\n- Servicio: *€0,015*\n\nEjemplo, mensajes de marketing:\n- 100 clientes × 1 mensaje = *€5*\n- 1.000 clientes × 1 mensaje = *€50*\n\n*Los costes de Meta se suman a la suscripción y se aplican de nuevo en cada campaña de pago.*\n\nSi tus clientes están en otro país, toca *Pregunta de precios* y elige *Tarifas de otro país*.\n\nSi ambos costes te encajan, toca *Reservar demo* para una presentación de 15 minutos."
           },
@@ -4183,7 +4065,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hola 👋 ¡Bienvenido a *FlowFlex AI*!\n\n*Dos costes: suscripción a FlowFlex + cargos de mensajes de Meta.*\n\n① *Suscripción a FlowFlex* — difusiones, respuestas automáticas y bandeja de entrada compartida para tu equipo.\n\nEl plan Basic empieza en *$23/mes, facturados $276 al año*, o *$29/mes, facturados $87 al trimestre*, o *$35/mes con facturación mensual*.\n\n② *Mensajes de Meta a números españoles* — por mensaje entregado:\n- Marketing: *€0,05*\n- Utilidad: *€0,015*\n- Autenticación: *€0,015*\n- Servicio: *€0,015*\n\nEjemplo, mensajes de marketing:\n- 100 clientes × 1 mensaje = *€5*\n- 1.000 clientes × 1 mensaje = *€50*\n\n*Los costes de Meta se suman a la suscripción y se aplican de nuevo en cada campaña de pago.*\n\nSi tus clientes están en otro país, toca *Pregunta de precios* y elige *Tarifas de otro país*.\n\nSi ambos costes te encajan, toca *Reservar demo* para una presentación de 15 minutos.",
           "footer": "",
           "buttons": [
@@ -4203,15 +4085,7 @@
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "hours",
-          "response_wait": 3,
-          "header_data": "",
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          }
+          "response_wait": 3
         }
       },
       "width": 250,
@@ -4291,12 +4165,6 @@
         "message_type": "interactive",
         "meta_payload": {
           "type": "button",
-          "header": {
-            "type": "document",
-            "document": {
-              "assetId": "asset_68093a70a3a73ee6b88605923c5214ec"
-            }
-          },
           "body": {
             "text": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta messaging charges* — Meta prices each country separately and bills per delivered message. *These Meta costs are additional to your subscription and apply again for each paid campaign.*\n\nTo see the rate for your customers’ country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book a demo* for a 15-minute walkthrough."
           },
@@ -4328,7 +4196,7 @@
         },
         "form_payload": {
           "to": "{{tg.from}}",
-          "header_type": "document",
+          "header_type": "none",
           "body": "Hi 👋 Welcome to *FlowFlex AI*!\n\n*Two costs: FlowFlex subscription + Meta messaging charges.*\n\n*① FlowFlex subscription* — broadcasts, automated replies and a shared team inbox. Basic starts at *$23/month, billed $276 yearly*, or *$29/month, billed $87 quarterly*.\n\n*② Meta messaging charges* — Meta prices each country separately and bills per delivered message. *These Meta costs are additional to your subscription and apply again for each paid campaign.*\n\nTo see the rate for your customers’ country, tap *Pricing question* and choose *Another country’s rates*.\n\nIf both costs work for you, tap *Book a demo* for a 15-minute walkthrough.",
           "footer": "",
           "buttons": [
@@ -4348,15 +4216,7 @@
           "is_response_valid": false,
           "invalid_message": "",
           "response_wait_unit": "minutes",
-          "response_wait": "1",
-          "header_data": "",
-          "header_media_source": "upload",
-          "header_uploaded_file": {
-            "assetId": "asset_68093a70a3a73ee6b88605923c5214ec",
-            "filename": "FlowFlex-AI-Brochure.pdf",
-            "mime": "application/pdf",
-            "size": 39141
-          }
+          "response_wait": "1"
         }
       },
       "width": 250,
@@ -7563,7 +7423,7 @@
       "focusable": true
     },
     {
-      "id": "flow-edge-4131ad20-25ac-49f0-a691-0179bdc3bfc0",
+      "id": "flow-edge-8cb1371b-2580-46c6-836e-5bfef4ae935e",
       "source": "7effd51e-9337-4a33-823e-87627c0be416",
       "target": "5e0b400d-13a6-42bf-9e35-622cee74a2f7",
       "sourceHandle": "success-7effd51e-9337-4a33-823e-87627c0be416",
@@ -7579,7 +7439,7 @@
       }
     },
     {
-      "id": "flow-edge-ea4155c8-4bc1-4bf9-94e0-f7cb91010daa",
+      "id": "flow-edge-082016d0-5547-42d8-a2b9-550fc4352ff7",
       "source": "7effd51e-9337-4a33-823e-87627c0be416",
       "target": "3c3740c3-772d-4ee6-bfa9-f6f86c46c39c",
       "sourceHandle": "http-error-7effd51e-9337-4a33-823e-87627c0be416",
@@ -7595,7 +7455,7 @@
       }
     },
     {
-      "id": "flow-edge-5112e211-0d38-4a5b-8b21-565fec509c9c",
+      "id": "flow-edge-9ed48b10-6225-4f11-94bb-fd0416bc43ee",
       "source": "7effd51e-9337-4a33-823e-87627c0be416",
       "target": "3c3740c3-772d-4ee6-bfa9-f6f86c46c39c",
       "sourceHandle": "request-failed-7effd51e-9337-4a33-823e-87627c0be416",
@@ -7611,7 +7471,7 @@
       }
     },
     {
-      "id": "flow-edge-642a0981-324b-4ad3-a6ca-2663b4ee055a",
+      "id": "flow-edge-c171548b-3eef-48d1-876b-37fc1a145202",
       "source": "13a703b3-cabc-5457-96dd-c33e2aec00f0",
       "target": "5e0b400d-13a6-42bf-9e35-622cee74a2f7",
       "sourceHandle": "success-13a703b3-cabc-5457-96dd-c33e2aec00f0",
@@ -7627,7 +7487,7 @@
       }
     },
     {
-      "id": "flow-edge-04ca3291-047b-42cc-ad20-811a1faa1dcd",
+      "id": "flow-edge-08a23510-2aef-493e-8e75-207e9035760a",
       "source": "13a703b3-cabc-5457-96dd-c33e2aec00f0",
       "target": "c6bb172b-f38e-51a1-b402-91068ce5281c",
       "sourceHandle": "http-error-13a703b3-cabc-5457-96dd-c33e2aec00f0",
@@ -7643,7 +7503,7 @@
       }
     },
     {
-      "id": "flow-edge-69fc5be7-b302-4a62-897e-8e5aff20a742",
+      "id": "flow-edge-c9ae03fd-7ad0-4f48-ba16-d9c5fb865091",
       "source": "13a703b3-cabc-5457-96dd-c33e2aec00f0",
       "target": "c6bb172b-f38e-51a1-b402-91068ce5281c",
       "sourceHandle": "request-failed-13a703b3-cabc-5457-96dd-c33e2aec00f0",
@@ -7659,7 +7519,7 @@
       }
     },
     {
-      "id": "flow-edge-6aba3a8e-abee-4032-9914-f40ebaff3a85",
+      "id": "flow-edge-ff2447fb-dc72-4e01-822e-5682745ed32a",
       "source": "f08002aa-36ca-5f65-a2f2-4da3d523551f",
       "target": "5e0b400d-13a6-42bf-9e35-622cee74a2f7",
       "sourceHandle": "success-f08002aa-36ca-5f65-a2f2-4da3d523551f",
@@ -7675,7 +7535,7 @@
       }
     },
     {
-      "id": "flow-edge-51dfe526-0280-4478-be2a-26c274918f2d",
+      "id": "flow-edge-836f390b-7731-42d1-830f-de18b94229c3",
       "source": "f08002aa-36ca-5f65-a2f2-4da3d523551f",
       "target": "f92c7fae-fe50-5ce5-998d-4467e86504a5",
       "sourceHandle": "http-error-f08002aa-36ca-5f65-a2f2-4da3d523551f",
@@ -7691,7 +7551,7 @@
       }
     },
     {
-      "id": "flow-edge-48cbcf67-e03e-4a85-af68-e74839a988aa",
+      "id": "flow-edge-85aad7c8-7c45-442e-b355-bde099408f77",
       "source": "f08002aa-36ca-5f65-a2f2-4da3d523551f",
       "target": "f92c7fae-fe50-5ce5-998d-4467e86504a5",
       "sourceHandle": "request-failed-f08002aa-36ca-5f65-a2f2-4da3d523551f",

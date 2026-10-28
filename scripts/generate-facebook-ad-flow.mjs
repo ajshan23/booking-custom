@@ -117,6 +117,18 @@ for (const n of ad._nodes) {
   visit(n.data);
 }
 
+// Media headers point at a file in the exporting workspace, which the importing
+// workspace does not have (publish says "The file this step sends has been deleted").
+// Drop them; re-add the file on the step if it is wanted.
+for (const n of ad._nodes) {
+  const header = n.data.meta_payload?.header;
+  if (!header || !['document', 'image', 'video'].includes(header.type)) continue;
+  delete n.data.meta_payload.header;
+  const form = n.data.form_payload ?? {};
+  for (const k of ['header_media_source', 'header_uploaded_file', 'header_data']) delete form[k];
+  form.header_type = 'none';
+}
+
 // ---------------------------------------------------------------- 2. Booking flow
 const nodes = [], edges = [], counts = {};
 const node = (type, displayName, data = {}) => {
