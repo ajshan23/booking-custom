@@ -1,0 +1,51 @@
+# Production behind the server's existing Traefik (network "proxy", entrypoint "websecure", resolver "le").
+# No ports are published: Traefik reaches the API over "proxy", and MongoDB is only on the private network.
+name: booking-calendar
+services:
+  api:
+    build: .
+    container_name: booking-calendar-api
+    env_file: .env
+    environment:
+      MONGODB_URI: mongodb://mongo:27017
+      PORT: 3080
+      TRUST_PROXY_HOPS: 1
+    networks: [proxy, internal]
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+    stop_grace_period: 25s
+    mem_limit: 300m
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3080/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.booking-calendar.rule=Host(`booking.operium.pro`)
+      - traefik.http.routers.booking-calendar.entrypoints=websecure
+      - traefik.http.routers.booking-calendar.tls.certresolver=le
+      - traefik.http.services.booking-calendar.loadbalancer.server.port=3080
+  mongo:
+    image: mongo:8
+    container_name: booking-calendar-mongo
+    command: ["--wiredTigerCacheSizeGB", "0.25"]
+    volumes:
+      - booking-calendar-data:/data/db
+    networks: [internal]
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+networks:
+  proxy:
+    external: true
+  internal: {}
+volumes:
+  booking-calendar-data:
